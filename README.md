@@ -37,7 +37,7 @@ The program performs various matrix operations. You can specify the maximum valu
     ./main <max_value>
     ```
 
-   - `<max value for matrix values>`: This argument specifies the maximum value that each matrix element can take. For example, if you run `./main 10`, the program will generate matrices with values ranging from 0 to 9.
+   - `<max value>`: This argument specifies the maximum value that each matrix element can take. For example, if you run `./main 10`, the program will generate matrices with values ranging from 0 to 9.
 
 3. **Example Usage**:
     ```bash
