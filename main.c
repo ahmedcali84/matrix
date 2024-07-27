@@ -20,7 +20,6 @@ int main(int argc , char **argv)
 	Matrix add = matrix_add(&init , &init1);
 	Matrix mult = matrix_multiplication(&init , &init1);
 	Matrix T = Transpose(&init);
-	Matrix dot1 = matrix_multiplication(&T , &init1 );
 
 	MATRIX_PRINT(init);
 	MATRIX_PRINT(init1);
@@ -28,7 +27,6 @@ int main(int argc , char **argv)
 	MATRIX_PRINT(add);
 	MATRIX_PRINT(mult);
 	MATRIX_PRINT(T);
-	MATRIX_PRINT(dot1);
 
 	unload(&init);
 	unload(&init1);
@@ -36,6 +34,5 @@ int main(int argc , char **argv)
 	unload(&add);
 	unload(&mult);
 	unload(&T);
-	unload(&dot1);
 	return 0;
 }
