@@ -3,23 +3,18 @@
 int main(int argc , char **argv)
 {
 
-	if (argc != 2)
+	if (argc != 4)
 	{
-		printf("Usage: %s <max value for your matrix values>.\n", argv[0]);
+		printf("Usage: %s <max value> <nrows> <ncols>.\n", argv[0]);
 		return 1;
 	}
 
-	int cols;
-	printf("Cols: ");
-	scanf("%d", &cols);
+	size_t max_value = (size_t) atoi(argv[1]);
+	size_t rows = (size_t) atoi(argv[2]);
+	size_t cols = (size_t) atoi(argv[3]);
 
-	int rows;
-	printf("Rows: ");
-	scanf("%d", &rows);
-	printf("\n");
-
-	Matrix init  = random_matrix( (size_t) atoi(argv[1]), rows , cols);
-	Matrix init1 = random_matrix( (size_t) atoi(argv[1]), rows , cols);
+	Matrix init  = random_matrix(max_value, rows, cols);
+	Matrix init1 = random_matrix(max_value, rows, cols);
 
 	Matrix sub = matrix_sub(&init , &init1);
 	Matrix add = matrix_add(&init , &init1);
