@@ -1,0 +1,122 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath}
+
+\begin{document}
+\author{Ahmed Ali}
+\title{Matrix Operations}
+\date{July 20, 2024}
+
+\maketitle
+
+\section{Introduction}
+
+\subsection{Addition}
+
+The Sum of two Matrices \(A\) and \(B\) is given by:
+
+\[C_{ij} = A_{ij} + B_{ij}\]
+
+\subsubsection{Example}
+
+Addition of \(A\) and \(B\):
+
+\[
+A = \begin{bmatrix} 
+A_{1.1} & A_{1.2} \\   
+A_{2.1} & A_{2.2}
+\end{bmatrix}  
+\quad
+B = \begin{bmatrix}
+B_{1.1} & B_{1.2} \\
+B_{2.1} & B_{2.2}
+\end{bmatrix}
+\]
+
+\[
+A + B = C
+\]
+
+\[
+C = \begin{bmatrix} 
+A_{1.1} + B_{1.1} & A_{1.2} + B_{1.2} \\   
+A_{2.1} + B_{2.1} & A_{2.2} + B_{2.2}
+\end{bmatrix}
+\]
+
+\subsection{Subtraction}
+The Difference of two Matrices \(A\) and \(B\) is given by:
+\[C_{ij} = A_{ij} - B_{ij}\]
+
+\subsubsection{Example}
+
+Subtraction of \(A\) and \(B\): 
+
+\[
+A = \begin{bmatrix} 
+A_{1.1} & A_{1.2} \\   
+A_{2.1} & A_{2.2}
+\end{bmatrix}  
+\quad
+B = \begin{bmatrix}
+B_{1.1} & B_{1.2} \\
+B_{2.1} & B_{2.2}
+\end{bmatrix}
+\]
+
+\[
+A - B = C
+\]
+
+\[
+C = \begin{bmatrix} 
+A_{1.1} - B_{1.1} & A_{1.2} - B_{1.2} \\   
+A_{2.1} - B_{2.1} & A_{2.2} - B_{2.2}
+\end{bmatrix}
+\]
+
+
+\subsection{Multiplication}
+The Product of two Matrices \(A\) and \(B\)  is given by:
+
+\[C_{ij} = \sum_k A_{ik} \cdot B_{kj}\]
+
+\subsubsection{Example}
+Multiplication of \(A\) and \(B\):
+
+\[
+A = \begin{bmatrix} 
+A_{1.1} & A_{1.2} \\   
+A_{2.1} & A_{2.2}
+\end{bmatrix}  
+\quad
+B = \begin{bmatrix}
+B_{1.1} & B_{1.2} \\
+B_{2.1} & B_{2.2}
+\end{bmatrix}
+\]
+
+\[
+A \cdot B = C
+\]
+
+\[
+C_{1.1} = A_{1.1} \cdot B_{1.1} + A_{1.2} \cdot B_{2.1}
+\]
+\[
+C_{1.2} = A_{1.1} \cdot B_{1.2} + A_{1.2} \cdot B_{2.2} 
+\]
+\[
+C_{2.1} = A_{2.1} \cdot B_{1.1} + A_{2.2} \cdot B_{2.1} 
+\]
+\[
+C_{2.2} = A_{2.1} \cdot B_{1.2} + A_{2.2} \cdot B_{2.2}
+\]
+
+\[
+C = \begin{bmatrix} 
+C_{1.1} & C_{1.2} \\   
+C_{2.1} & C_{2.2}
+\end{bmatrix}
+\]
+
+\end{document}
