@@ -1,2 +1,5 @@
 *.log
 *.aux
+main
+main.o
+matrix.o
