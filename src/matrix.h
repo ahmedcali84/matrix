@@ -36,6 +36,10 @@ Matrix matrix_multiplication(Matrix * A, Matrix * B);
 // Return Transpose of Matrix A
 Matrix Transpose(Matrix *A);
 
+// Test Matrices
+void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
+#define TEST_MATRIX(A , B) Test_Matrix(A , B , #A ,#B)
+
 // Function to free Allocated Memory
 void unload(Matrix *B);
 
