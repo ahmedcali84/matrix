@@ -107,7 +107,7 @@ Matrix matrix_multiplication(Matrix * A, Matrix * B)
 {
 	if(A->ncols != B->nrows)
 	{
-		fprintf(stderr , "Cannot Multiply A->ncols %zu != B->nrows%zu.\n", A->ncols,B->nrows);
+		fprintf(stderr , "Cannot Multiply A->ncols( %zu ) != B->nrows( %zu ).\n", A->ncols,B->nrows);
 		exit(EXIT_FAILURE);
 	}
 
