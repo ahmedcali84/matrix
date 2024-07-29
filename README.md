@@ -46,13 +46,13 @@ The program performs various matrix operations. You can specify the maximum valu
     ./main 10 4 4
     ```
 
-   This will generate matrices with random values between 0 and 9, perform matrix operations (addition, subtraction, multiplication), and display the results.
+   This will generate matrices with random values between 0 and 9, with 4 rows and columns , perform matrix operations (addition, subtraction, multiplication and transposition), and display the results.
 
-You can also modify the `main.c` file to include your own matrix data and operations. Here is a brief overview of the files and their purposes:
+You can also modify the `src/main.c` file to include your own matrix data and operations. Here is a brief overview of the files and their purposes:
 
-- `main.c`: Contains the main function and example usage of matrix operations.
-- `matrix.c`: Contains the implementation of matrix operations.
-- `matrix.h`: Header file declaring the functions for matrix operations.
+- `src/main.c`: Contains the main function and example usage of matrix operations.
+- `src/matrix.c`: Contains the implementation of matrix operations.
+- `src/matrix.h`: Header file declaring the functions for matrix operations.
 
 ## Files
 
