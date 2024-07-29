@@ -1,17 +1,17 @@
 # Matrix Operations
 
-This repository contains a collection of matrix operations implemented in C. The project demonstrates fundamental matrix operations such as addition, subtraction, multiplication, and transposition(in works, not fully implemented yet).
+This repository contains a collection of matrix operations implemented in C. The project demonstrates fundamental matrix operations such as addition, subtraction, multiplication, and transposition.
 
 ## Table of Contents
 
 - [Matrix Operations](#matrix-operations)
-	- [Table of Contents](#table-of-contents)
-	- [Installation](#installation)
-	- [Usage](#usage)
-	- [Files](#files)
-	- [Contributing](#contributing)
-	- [License](#license)
-	- [Contact](#contact)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Files](#files)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
 
 ## Installation
 
