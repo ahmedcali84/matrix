@@ -48,9 +48,6 @@ void print_matrix(Matrix B, const char *name)
 
 Matrix  matrix_add(Matrix *A , Matrix *B)
 {
-	assert(A->ncols == B->ncols && A->nrows == B->nrows);
-
-
 	Matrix C = {
 		.nrows = A->nrows,
 		.ncols = A->ncols,
@@ -58,27 +55,33 @@ Matrix  matrix_add(Matrix *A , Matrix *B)
 	};
 
 	if (C.A == NULL) {
-        perror("Failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
-
-	for (size_t i = 0; i < A->nrows; i++)
-	{
-		for (size_t j = 0; j < A->ncols; j++)
-		{
-			size_t index = i*A->ncols + j;
-			C.A[index] = A->A[index] + B->A[index];	
-		}
+		perror("Failed to allocate memory");
+		exit(EXIT_FAILURE);
 	}
-	
-	return C;
+	if(A->ncols == B->ncols && A->nrows == B->nrows)
+	{
+		for (size_t i = 0; i < A->nrows; i++)
+		{
+			for (size_t j = 0; j < A->ncols; j++)
+			{
+				size_t index = i*A->ncols + j;
+				C.A[index] = A->A[index] + B->A[index];	
+			}
+		}
+		
+		return C;
+	}
+	else
+	{
+		unload(&C);
+		fprintf(stderr, "Dimension Error.\n");
+		return *(Matrix *) A;
+	}
 }
 
 
 Matrix  matrix_sub(Matrix *A , Matrix *B)
 {
-	assert(A->ncols == B->ncols && A->nrows == B->nrows);
-
 	Matrix C = {
 		.nrows = A->nrows,
 		.ncols = A->ncols,
@@ -86,20 +89,28 @@ Matrix  matrix_sub(Matrix *A , Matrix *B)
 	};
 
 	if (C.A == NULL) {
-        perror("Failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
-
-	for (size_t i = 0; i < A->nrows; i++)
-	{
-		for (size_t j = 0; j < A->ncols; j++)
-		{
-			size_t index = i*A->ncols + j;
-			C.A[index] = A->A[index] - B->A[index];	
-		}
+		perror("Failed to allocate memory");
+		exit(EXIT_FAILURE);
 	}
-	
-	return C;
+	if(A->ncols == B->ncols && A->nrows == B->nrows)
+	{
+		for (size_t i = 0; i < A->nrows; i++)
+		{
+			for (size_t j = 0; j < A->ncols; j++)
+			{
+				size_t index = i*A->ncols + j;
+				C.A[index] = A->A[index] - B->A[index];	
+			}
+		}
+		
+		return C;
+	}
+	else
+	{
+		unload(&C);
+		fprintf(stderr, "Dimension Error.\n");
+		return *(Matrix *) A;
+	}
 }
 
 
@@ -112,9 +123,9 @@ Matrix matrix_multiplication(Matrix * A, Matrix * B)
 	}
 
 	Matrix C = {
-		.ncols = A->ncols,
-		.nrows = B->nrows,
-		.A = malloc(sizeof(int) *(A->ncols*B->nrows)),
+		.ncols = B->ncols,
+		.nrows = A->nrows,
+		.A = malloc(sizeof(int) *(A->nrows*B->ncols)),
 	};
 
 	if (C.A == NULL) {
@@ -171,8 +182,8 @@ Matrix Transpose(Matrix *A)
 	{
 		for (size_t j = 0; j < A->nrows; j++)
 		{
-			size_t index = (i * A->ncols) + j;
-			size_t indexC = (j * A->nrows) + i;
+			size_t index = (j * A->ncols) + i;
+			size_t indexC = (i * A->nrows) + j;
 			C.A[indexC] = A->A[index];
 		}
 	}
@@ -191,7 +202,7 @@ void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 			assert(A.A[index] == B.A[index]);
 		}
 	}
-	printf("Matrix '%s' and '%s' are Equal.\n",matrix_a , matrix_b);
+	printf("Matrix '%s' = '%s'.\n",matrix_a , matrix_b);
 }
 
 
