@@ -34,16 +34,18 @@ The program performs various matrix operations. You can specify the maximum valu
 
 2. **Run the Program with Command-Line Arguments**:
     ```bash
-    ./main <max_value> <nrows> <ncols>
+    ./main <max_value> <nrows> <ncols> <nrows1> <nrows2>
     ```
 
    - `<max value>`: This argument specifies the maximum value that each matrix element can take. For example, if you run `./main 10 4 4 `, the program will generate matrices with values ranging from 0 to 9 with 4 columns and 4 rows.
-   - `<nrows>`: No. of matrix Rows.
-   - `<ncols>`: No. of matrix Columns.
+   - `<nrows>`: No. of matrix Rows for the First Matrix.
+   - `<ncols>`: No. of matrix Columns for the First Matrix.
+   - `<nrows1>`: No. of matrix Rows for the Second Matrix.
+   - `<ncols1>`: No. of matrix Columns for the Second Matrix.
 
 3. **Example Usage**:
     ```bash
-    ./main 10 4 4
+    ./main 10 4 4 4 4
     ```
 
    This will generate matrices with random values between 0 and 9, with 4 rows and columns , perform matrix operations (addition, subtraction, multiplication and transposition), and display the results.
