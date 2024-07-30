@@ -4,20 +4,22 @@
 int main(int argc , char **argv)
 {
 
-	if (argc != 4)
+	if (argc != 6)
 	{
-		printf("Usage: %s <max value> <nrows> <ncols>.\n", argv[0]);
+		printf("Usage: %s <max value> (Matrix1) <nrows> <ncols> (Matrix2) <nrows1> <ncols2>.\n", argv[0]);
 		return 1;
 	}
 
 	size_t max_value = (size_t) atoi(argv[1]);
 	size_t rows = (size_t) atoi(argv[2]);
 	size_t cols = (size_t) atoi(argv[3]);
+	size_t rows1 = (size_t) atoi(argv[4]);
+	size_t cols2 = (size_t) atoi(argv[5]);
 
 	srand(time(NULL));
 
 	Matrix init  = random_matrix(max_value, rows, cols);
-	Matrix init1 = random_matrix(max_value, rows, cols);
+	Matrix init1 = random_matrix(max_value, rows1, cols2);
 
 	Matrix sub = matrix_sub(&init , &init1);
 	Matrix add = matrix_add(&init , &init1);
@@ -26,7 +28,8 @@ int main(int argc , char **argv)
 	Matrix T2 = Transpose(&init1);
 	Matrix add1 = matrix_add(&T1 , &T2);
 	Matrix T3 = Transpose(&add);
-	
+	Matrix originit = Transpose(&init);
+	Matrix originit2 = Transpose(&originit);
 
 	MATRIX_PRINT(init);
 	MATRIX_PRINT(init1);
@@ -37,6 +40,7 @@ int main(int argc , char **argv)
 	MATRIX_PRINT(T2);
 	MATRIX_PRINT(add1);
 	MATRIX_PRINT(T3);
+	MATRIX_PRINT(originit2);
 	TEST_MATRIX(add1 , T3);
 
 	unload(&init);
@@ -48,5 +52,7 @@ int main(int argc , char **argv)
 	unload(&T2);
 	unload(&add1);
 	unload(&T3);
+	unload(&originit);
+	unload(&originit2);
 	return 0;
 }
