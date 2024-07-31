@@ -192,6 +192,60 @@ Matrix Transpose(Matrix *A)
 }
 
 
+Matrix create_matrix(size_t nrows, size_t ncols)
+{
+	Matrix C = {
+		.A = (int *)calloc((nrows * ncols), sizeof(int)),
+		.ncols = ncols,
+		.nrows = nrows,
+	};
+
+	if (C.A == NULL)
+	{
+		perror("Failed to allocate memory");
+		exit(EXIT_FAILURE);
+	}
+
+	int k = 0;
+	for (size_t i = 0; i < nrows; i++)
+	{
+		for (size_t j = 0; j < ncols; j++)
+		{
+			size_t index = i * ncols + j;
+			C.A[index] = k + 1;
+			k++;
+		}
+	}
+	return C;
+}
+
+
+Matrix expected_matrix(Matrix *input)
+{
+	Matrix C = {
+		.A = (int *)calloc((input->nrows * input->ncols), sizeof(int)),
+		.ncols = input->ncols,
+		.nrows = input->nrows,
+	};
+
+	if (C.A == NULL)
+	{
+		perror("Failed to allocate memory");
+		exit(EXIT_FAILURE);
+	}
+
+	for (size_t i = 0; i < input->nrows; i++)
+	{
+		for (size_t j = 0; j < input->ncols; j++)
+		{
+			size_t index = i * input->ncols + j;
+			C.A[index] = input->A[index] * 2;
+		}
+	}
+	return C;
+}
+
+
 void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 {
 	for (size_t i = 0 ; i < A.nrows; i++)

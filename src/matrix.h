@@ -40,6 +40,10 @@ Matrix Transpose(Matrix *A);
 void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
 #define TEST_MATRIX(A , B) Test_Matrix(A , B , #A ,#B)
 
+Matrix create_matrix(size_t nrows, size_t ncols);
+
+Matrix expected_matrix(Matrix *input);
+
 // Function to free Allocated Memory
 void unload(Matrix *B);
 
