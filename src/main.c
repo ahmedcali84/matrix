@@ -26,7 +26,7 @@ int main(int argc , char **argv)
 	MATRIX_PRINT(output);
 
 	double learning_rate = 0.0001;
-	int epochs = 1000000;
+	int epochs = 1000000; 
 	int max = 100000;
 	train(&input , &weights , &expected , epochs , learning_rate , max);
 
