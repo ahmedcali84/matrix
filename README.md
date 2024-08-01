@@ -1,6 +1,6 @@
 # Matrix Operations
 
-This repository contains a collection of matrix operations implemented in C. The project demonstrates fundamental matrix operations such as addition, subtraction, multiplication, and transposition.
+This repository contains a collection of matrix operations implemented in C. The project demonstrates fundamental matrix operations such as addition, subtraction, multiplication, and transposition and implements a simple neural network.
 
 ## Table of Contents
 
@@ -34,21 +34,17 @@ The program performs various matrix operations. You can specify the maximum valu
 
 2. **Run the Program with Command-Line Arguments**:
     ```bash
-    ./main <max_value> <nrows> <ncols> <nrows1> <nrows2>
+    ./main <max-value>
     ```
 
-   - `<max value>`: This argument specifies the maximum value that each matrix element can take. For example, if you run `./main 10 4 4 `, the program will generate matrices with values ranging from 0 to 9 with 4 columns and 4 rows.
-   - `<nrows>`: No. of matrix Rows for the First Matrix.
-   - `<ncols>`: No. of matrix Columns for the First Matrix.
-   - `<nrows1>`: No. of matrix Rows for the Second Matrix.
-   - `<ncols1>`: No. of matrix Columns for the Second Matrix.
+   - `<max value>`: This argument specifies the maximum value that each matrix element can take. For example, if you run `./main 10  `, the program will generate matrices with values ranging from 0 to 9.
 
 3. **Example Usage**:
     ```bash
-    ./main 10 4 4 4 4
+    ./main 10 
     ```
 
-   This will generate matrices with random values between 0 and 9, with 4 rows and columns , perform matrix operations (addition, subtraction, multiplication and transposition), and display the results.
+   This will generate matrices with random values between 0 and 9.
 
 You can also modify the `src/main.c` file to include your own matrix data and operations. Here is a brief overview of the files and their purposes:
 
