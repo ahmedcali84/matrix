@@ -1,13 +1,20 @@
 #include "matrix.h"
 #include <time.h>
 
-int main(void)
+int main(int argc , char **argv)
 {
+	if (argc != 2)
+	{
+		printf("Usage: %s <max-value>.\n",argv[0]);
+		return 1;
+	}
 
-	// srand(time(NULL));
+	srand(time(NULL));
 
-	Matrix input = random_matrix(10 , 5, 5);
-	Matrix weights = random_matrix(20, 5 , 5);
+	int max_value = atoi(argv[1]);
+
+	Matrix input = random_matrix(max_value , 5, 5);
+	Matrix weights = random_matrix(max_value, 5 , 5);
 	Matrix expected =  expected_matrix(&input);
 	Matrix output = dot_product(&input , &weights);
 
@@ -24,7 +31,7 @@ int main(void)
 	train(&input , &weights , &expected , epochs , learning_rate , max);
 
     // Free allocated memory
-	Matrix Test = random_matrix(10 ,5 , 5);
+	Matrix Test = random_matrix(max_value ,5 , 5);
 	Matrix True =  expected_matrix(&Test);
 	Matrix predicted = dot_product(&Test , &weights);
 
