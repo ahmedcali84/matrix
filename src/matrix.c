@@ -231,7 +231,7 @@ Matrix create_matrix(float nrows, float ncols)
 Matrix expected_matrix(Matrix *input)
 {
 	Matrix C = allocate(input->nrows, input->ncols);
-	
+
 	for (int i = 0; i < (int) input->nrows; i++)
 	{
 		for (int j = 0; j < (int) input->ncols; j++)
@@ -244,17 +244,22 @@ Matrix expected_matrix(Matrix *input)
 }
 
 
-void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
+bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 {
 	for (int i = 0 ; i < (int) A.nrows; i++)
 	{
 		for (int j = 0 ; j < (int) A.nrows; j++)
 		{
 			int index = (i * A.ncols) + j;
-			assert(A.A[index] == B.A[index]);
+			if(A.A[index] != B.A[index])
+			{
+				fprintf(stderr, "Error: Matrix '%s' != '%s'.\n",matrix_a , matrix_b);
+				return false;
+			}
 		}
 	}
 	printf("Matrix '%s' = '%s'.\n",matrix_a , matrix_b);
+	return true;
 }
 
 
