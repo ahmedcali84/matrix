@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <float.h>
 #include <math.h>
+#include <stdbool.h>
 
 
 // Matrix Struction and Information
@@ -47,7 +48,7 @@ Matrix inverse(Matrix *A);
 Matrix Transpose(Matrix *A);
 
 // Test Matrices
-void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
+bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
 
 // Special Macro Version of Test Matrix Function also prints the variable-name of the Matrix
 #define TEST_MATRIX(A , B) Test_Matrix(A , B , #A ,#B)
