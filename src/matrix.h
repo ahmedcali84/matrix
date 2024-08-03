@@ -4,19 +4,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <float.h>
+#include <math.h>
 
 
 // Matrix Struction and Information
 typedef struct Matrix
 {
-	double * A;
-	double nrows;
-	double ncols;
+	float * A;
+	float nrows;
+	float ncols;
 } Matrix;
 
 
+Matrix allocate(float rows , float cols);
+
 // Generates random Matrix(nrows x ncols)
-Matrix random_matrix(int max, double nrows , double ncols);
+Matrix random_matrix(int max, float nrows , float ncols);
 
 // Prints a Matrix
 void print_matrix(Matrix B, const char *name);
@@ -29,10 +33,10 @@ Matrix  matrix_add(Matrix *A , Matrix *B);
 
 // Subtracts two Matrices
 Matrix  matrix_sub(Matrix *A , Matrix *B);
-
+Matrix Hadamard_Product(Matrix * A, Matrix * B);
 // Multiplies two Matrices
 Matrix dot_product(Matrix * A, Matrix * B);
-
+Matrix inverse(Matrix *A);
 // Return Transpose of Matrix A
 Matrix Transpose(Matrix *A);
 
@@ -40,12 +44,12 @@ Matrix Transpose(Matrix *A);
 void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
 #define TEST_MATRIX(A , B) Test_Matrix(A , B , #A ,#B)
 
-Matrix create_matrix(double nrows, double ncols);
+Matrix create_matrix(float nrows, float ncols);
 
 Matrix expected_matrix(Matrix *input);
 
-double cost(Matrix *p , Matrix *y);
-void train(Matrix *x , Matrix *w , Matrix *y , int epochs , double learn , int max);
+float cost(Matrix *p , Matrix *y);
+void train(Matrix *x , Matrix *w , Matrix *y , int epochs , float learn , int max);
 
 // Function to free Allocated Memory
 void unload(Matrix *B);
