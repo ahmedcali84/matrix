@@ -116,6 +116,7 @@ Matrix  matrix_sub(Matrix *A , Matrix *B)
 
 Matrix dot_product(Matrix * A, Matrix * B)
 {
+	// Hadamard Product
 	if (A->ncols == B->ncols && A->nrows == B->nrows)
 	{
 		Matrix C = {
@@ -139,6 +140,8 @@ Matrix dot_product(Matrix * A, Matrix * B)
 		}
 		return C;
 	}
+
+	//Dot Product
 	else 
 	{
 		if(A->ncols != B->nrows)
