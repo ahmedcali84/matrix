@@ -1,9 +1,26 @@
 
 #include "matrix.h"
 
-Matrix random_matrix(int max, double nrows , double ncols)
+Matrix allocate(float rows , float cols)
 {
-	double * A = malloc(sizeof(double) * (nrows*ncols));
+	Matrix alloc = {
+		.A = malloc(sizeof(float)* rows * cols),
+		.nrows = rows,
+		.ncols = cols,
+	};
+
+	if (alloc.A == NULL)
+	{
+		perror("Failed to allocate memory");
+		exit(EXIT_FAILURE);
+	}
+
+	return alloc;
+}
+
+Matrix random_matrix(int max, float nrows , float ncols)
+{
+	float * A = malloc(sizeof(float) * (nrows*ncols));
 	if (A == NULL) {
         perror("Failed to allocate memory");
         exit(EXIT_FAILURE);
@@ -18,7 +35,7 @@ Matrix random_matrix(int max, double nrows , double ncols)
 		}
 	}
 
-	double *temp = A;
+	float *temp = A;
 
 	Matrix dummy = {
 		.A = temp,
@@ -48,16 +65,8 @@ void print_matrix(Matrix B, const char *name)
 
 Matrix  matrix_add(Matrix *A , Matrix *B)
 {
-	Matrix C = {
-		.nrows = A->nrows,
-		.ncols = A->ncols,
-		.A = malloc(sizeof(double) * (A->ncols * A->nrows)),
-	};
+	Matrix C = allocate(A->nrows , A->ncols);
 
-	if (C.A == NULL) {
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
 	if(A->ncols == B->ncols && A->nrows == B->nrows)
 	{
 		for (int i = 0; i < (int) A->nrows; i++)
@@ -82,16 +91,8 @@ Matrix  matrix_add(Matrix *A , Matrix *B)
 
 Matrix  matrix_sub(Matrix *A , Matrix *B)
 {
-	Matrix C = {
-		.nrows = A->nrows,
-		.ncols = A->ncols,
-		.A = malloc(sizeof(double) * (A->ncols * A->nrows)),
-	};
+	Matrix C = allocate(A->nrows , A->ncols);
 
-	if (C.A == NULL) {
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
 	if(A->ncols == B->ncols && A->nrows == B->nrows)
 	{
 		for (int i = 0; i < (int) A->nrows; i++)
@@ -119,16 +120,7 @@ Matrix Hadamard_Product(Matrix * A, Matrix * B)
 	assert(A->ncols == B->ncols);
 	assert(A->nrows == B->nrows);
 
-	Matrix C = {
-		.ncols = B->ncols,
-		.nrows = A->nrows,
-		.A = malloc(A->ncols * B->nrows * sizeof(double)),
-	};
-
-	if (C.A == NULL) {
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
+	Matrix C = allocate(A->nrows , B->ncols);
 
 	for (int i = 0; i < (int) A->nrows; i++)
 	{
@@ -152,7 +144,7 @@ Matrix dot_product(Matrix * A, Matrix * B)
 	Matrix C = {
 		.ncols = B->ncols,
 		.nrows = A->nrows,
-		.A = malloc(A->ncols * B->nrows * sizeof(double)),
+		.A = malloc(A->ncols * B->nrows * sizeof(float)),
 	};
 
 	assert(C.nrows == A->nrows);
@@ -167,7 +159,7 @@ Matrix dot_product(Matrix * A, Matrix * B)
 	{
 		for (int j = 0; j < (int) B->ncols; j++) 
 		{
-			double nth_element = 0;
+			float nth_element = 0;
 			for (int k = 0; k < (int) A->ncols; k++) 
 			{
 				int indexA = i * A->ncols + k;
@@ -183,18 +175,26 @@ Matrix dot_product(Matrix * A, Matrix * B)
 }
 
 
+Matrix inverse(Matrix *A)
+{
+	Matrix C = allocate(A->nrows , A->ncols);
+
+	for(int i = 0; i < (int) A->ncols; i++)
+	{
+		for (int j = 0; j < (int) A->nrows; j++)
+		{
+			int indexC = (i * A->nrows) + j;
+			C.A[indexC] = 1.0f / A->A[indexC];
+		}
+	}
+	
+	return C;
+}
+
+
 Matrix Transpose(Matrix *A)
 {
-	Matrix C = {
-		.nrows = A->ncols,
-		.ncols = A->nrows,
-		.A = malloc(sizeof(double) * (A->ncols * A->nrows)),
-	};
-
-	if (C.A == NULL) {
-        perror("Failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
+	Matrix C = allocate(A->nrows , A->ncols);
 
 	for(int i = 0; i < (int) A->ncols; i++)
 	{
@@ -210,21 +210,11 @@ Matrix Transpose(Matrix *A)
 }
 
 
-Matrix create_matrix(double nrows, double ncols)
+Matrix create_matrix(float nrows, float ncols)
 {
-	Matrix C = {
-		.A = malloc(nrows * ncols*sizeof(double)),
-		.ncols = ncols,
-		.nrows = nrows,
-	};
+	Matrix C = allocate(nrows, ncols);
 
-	if (C.A == NULL)
-	{
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
-
-	double k = 0;
+	float k = 0;
 	for (int i = 0; i < (int)nrows; i++)
 	{
 		for (int j = 0; j < (int)ncols; j++)
@@ -240,18 +230,8 @@ Matrix create_matrix(double nrows, double ncols)
 
 Matrix expected_matrix(Matrix *input)
 {
-	Matrix C = {
-		.A = (double *)calloc((input->nrows * input->ncols), sizeof(double)),
-		.ncols = input->ncols,
-		.nrows = input->nrows,
-	};
-
-	if (C.A == NULL)
-	{
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
-
+	Matrix C = allocate(input->nrows, input->ncols);
+	
 	for (int i = 0; i < (int) input->nrows; i++)
 	{
 		for (int j = 0; j < (int) input->ncols; j++)
@@ -278,23 +258,23 @@ void Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 }
 
 
-double cost(Matrix *p , Matrix *y)
+float cost(Matrix *p , Matrix *y)
 {
-	double cost = 0;
-	double total_elements = p->nrows * p->ncols;
+	float cost = 0;
+	float total_elements = p->nrows * p->ncols;
 	for (int i = 0; i < (int) total_elements; i++)
 	{
-		double d = p->A[i] - y->A[i];
+		float d = p->A[i] - y->A[i];
 		cost += d * d;
 	}
 	return cost / total_elements;
 }
 
 
-void train(Matrix *x , Matrix *w , Matrix *y , int epochs , double learn , int max)
+void train(Matrix *x , Matrix *w , Matrix *y , int epochs , float learn , int max)
 {
 	Matrix z ;
-	double initial_cost , final_cost;
+	float initial_cost , final_cost;
 	for (int epoch = 0; epoch < epochs; epoch++)
 	{
 		z =  dot_product(x , w);
@@ -303,7 +283,7 @@ void train(Matrix *x , Matrix *w , Matrix *y , int epochs , double learn , int m
 		{
 			for (int j = 0; j < (int) w->ncols; j++)
 			{
-				double gradient = 0.0;
+				float gradient = 0.0;
                 for (int k = 0; k < (int)x->nrows; k++) {
                     int index_z = k * z.ncols + j; // Assuming z is of shape [x->nrows x->ncols]
                     int index_x = k * x->ncols + i; // Assuming x is of shape [x->nrows x->ncols]
