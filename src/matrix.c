@@ -116,43 +116,69 @@ Matrix  matrix_sub(Matrix *A , Matrix *B)
 
 Matrix dot_product(Matrix * A, Matrix * B)
 {
-	if(A->ncols != B->nrows)
+	if (A->ncols == B->ncols && A->nrows == B->nrows)
 	{
-		fprintf(stderr , "Cannot Multiply A->ncols( %lf ) != B->nrows( %lf ).\n", A->ncols,B->nrows);
-		exit(EXIT_FAILURE);
-	}
+		Matrix C = {
+			.ncols = B->ncols,
+			.nrows = A->nrows,
+			.A = malloc(A->ncols * B->nrows * sizeof(double)),
+		};
 
-	Matrix C = {
-		.ncols = B->ncols,
-		.nrows = A->nrows,
-		.A = malloc(A->ncols * B->nrows * sizeof(double)),
-	};
+		if (C.A == NULL) {
+			perror("Failed to allocate memory");
+			exit(EXIT_FAILURE);
+		}
 
-	assert(C.nrows == A->nrows);
-    assert(C.ncols == B->ncols);
-
-	if (C.A == NULL) {
-        perror("Failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
-
-    for (int i = 0; i < (int) A->nrows; i++) 
-	{
-        for (int j = 0; j < (int) B->ncols; j++) 
+		for (int i = 0; i < (int) A->nrows; i++)
 		{
-			double nth_element = 0;
-            for (int k = 0; k < (int) A->ncols; k++) 
+			for (int j = 0; j < (int) A->ncols; j++)
 			{
-				int indexA = i * A->ncols + k;
-				int indexB = k * B->ncols + j;
-                nth_element += A->A[indexA] * B->A[indexB];
-            }
-			int indexC = i * C.ncols + j;
-			C.A[indexC] = nth_element;
-        }
-    }
+				int index = i*A->ncols + j;
+				C.A[index] = A->A[index] * B->A[index];	
+			}
+		}
+		return C;
+	}
+	else 
+	{
+		if(A->ncols != B->nrows)
+		{
+			fprintf(stderr , "Cannot Multiply A->ncols( %lf ) != B->nrows( %lf ).\n", A->ncols,B->nrows);
+			exit(EXIT_FAILURE);
+		}
 
-	return C;
+		Matrix C = {
+			.ncols = B->ncols,
+			.nrows = A->nrows,
+			.A = malloc(A->ncols * B->nrows * sizeof(double)),
+		};
+
+		assert(C.nrows == A->nrows);
+		assert(C.ncols == B->ncols);
+
+		if (C.A == NULL) {
+			perror("Failed to allocate memory");
+			exit(EXIT_FAILURE);
+		}
+
+		for (int i = 0; i < (int) A->nrows; i++) 
+		{
+			for (int j = 0; j < (int) B->ncols; j++) 
+			{
+				double nth_element = 0;
+				for (int k = 0; k < (int) A->ncols; k++) 
+				{
+					int indexA = i * A->ncols + k;
+					int indexB = k * B->ncols + j;
+					nth_element += A->A[indexA] * B->A[indexB];
+				}
+				int indexC = i * C.ncols + j;
+				C.A[indexC] = nth_element;
+			}
+		}
+
+		return C;
+	}
 }
 
 
