@@ -2,7 +2,7 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -g -std=c11 -ggdb
+CFLAGS = -o3 -Wall -Wextra -g -std=c11 -ggdb -pedantic
 
 # Linker flags
 LDLIBS = -lm
