@@ -1,6 +1,6 @@
 # Matrix Operations
 
-This repository contains a collection of matrix operations implemented in C. The project demonstrates fundamental matrix operations such as addition, subtraction, multiplication, and transposition and implements a simple neural network.
+This repository contains a collection of matrix operations implemented in C. The project demonstrates fundamental matrix operations such as addition, subtraction, multiplication, and transposition.
 
 ## Table of Contents
 
