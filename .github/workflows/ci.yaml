@@ -17,6 +17,7 @@ jobs:
 
     - name: Install build dependencies
       run: sudo apt-get install -y build-essential
+      run: sudo apt install valgrind
 
     - name: Compile the program
       working-directory: src
