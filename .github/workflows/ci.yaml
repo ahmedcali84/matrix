@@ -16,8 +16,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Install build dependencies
-      run: sudo apt-get install -y build-essential
-      run: sudo apt install valgrind
+      run: sudo apt-get update && sudo apt-get install -y build-essential valgrind
 
     - name: Compile the program
       working-directory: src
