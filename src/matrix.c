@@ -313,59 +313,8 @@ bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 			}
 		}
 	}
-	printf("Matrix '%s' = '%s'.\n",matrix_a , matrix_b);
+	printf(BOLD GREEN "Matrix '%s' = '%s'.\n"RESET,matrix_a , matrix_b);
 	return true;
-}
-
-
-float cost(Matrix *p , Matrix *y)
-{
-	float cost = 0;
-	float total_elements = p->nrows * p->ncols;
-	for (int i = 0; i < (int) total_elements; i++)
-	{
-		float d = p->A[i] - y->A[i];
-		cost += d * d;
-	}
-	return cost / total_elements;
-}
-
-
-void train(Matrix *x , Matrix *w , Matrix *y , int epochs , float learn , int max)
-{
-	Matrix z ;
-	float initial_cost , final_cost;
-	for (int epoch = 0; epoch < epochs; epoch++)
-	{
-		z =  dot_product(x , w);
-		initial_cost = cost(&z , y);
-		for (int i = 0; i < (int) w->nrows; i++)
-		{
-			for (int j = 0; j < (int) w->ncols; j++)
-			{
-				float gradient = 0.0;
-                for (int k = 0; k < (int)x->nrows; k++) {
-                    int index_z = k * z.ncols + j; // Assuming z is of shape [x->nrows x->ncols]
-                    int index_x = k * x->ncols + i; // Assuming x is of shape [x->nrows x->ncols]
-                    gradient += (z.A[index_z] - y->A[index_z]) * x->A[index_x];
-                }
-                int index_w = i * w->ncols + j;
-                w->A[index_w] -= (learn / x->nrows) * gradient;
-            }
-        }
-		if (epoch % max == 0 || epoch == epochs - 1) {
-            printf(BOLD GREEN "Epoch %d, Cost: %lf\n" RESET, epoch, initial_cost);
-        }
-		unload(&z);
-	}
-
-
-
-	z = dot_product(x ,w);
-	final_cost = cost(&z , y);
-	printf("Final Cost = %lf\n", final_cost);
-
-	unload(&z);
 }
 
 
