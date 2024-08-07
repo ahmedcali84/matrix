@@ -51,7 +51,7 @@ Matrix Hadamard_Product(Matrix * A, Matrix * B);
 Matrix dot_product(Matrix * A, Matrix * B);
 
 // Returns the Inverse of a Matrix (in-Works , will update when its finished)
-Matrix inverse(Matrix *A);
+// Matrix inverse(Matrix *A);
 
 // Return Transpose of Matrix A
 Matrix Transpose(Matrix *A);
@@ -67,12 +67,6 @@ Matrix create_matrix(float nrows, float ncols , float value);
 
 // Returns the doubled-version of created Matrix (For Development Purposes)
 Matrix expected_matrix(Matrix *input);
-
-// Computes the cost Function (For Development Purposes)
-float cost(Matrix *p , Matrix *y);
-
-// Trains a simple neural network using gradient descent (For Development Purposes)
-void train(Matrix *x , Matrix *w , Matrix *y , int epochs , float learn , int max);
 
 // Function to free Allocated Memory
 void unload(Matrix *B);
