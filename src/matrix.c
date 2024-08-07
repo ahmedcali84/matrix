@@ -1,28 +1,14 @@
+/*
+************** MATRIX OPERATIONS FUNCTIONS IMPLEMENTATIONS *******************
+*/
 
 #include "matrix.h"
-
-Matrix allocate(float rows , float cols)
-{
-	Matrix alloc = {
-		.A = malloc(sizeof(float)* rows * cols),
-		.nrows = rows,
-		.ncols = cols,
-	};
-
-	if (alloc.A == NULL)
-	{
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
-
-	return alloc;
-}
 
 Matrix random_matrix(int max, float nrows , float ncols)
 {
 	float * A = malloc(sizeof(float) * (nrows*ncols));
 	if (A == NULL) {
-        perror("Failed to allocate memory");
+        printf(BOLD RED "Failed to allocate memory.\n"RESET);
         exit(EXIT_FAILURE);
     }
 
@@ -54,18 +40,29 @@ void print_matrix(Matrix B, const char *name)
 		for (int j = 0; j < (int) B.ncols; j++)
 		{
 			int index = i*B.ncols + j;
-			printf(" %lf ", B.A[index]);
+			printf(" %.2f ", B.A[index]);
 		}
 		printf("\n");
 	}
 	printf("]\n");
+	printf(BOLD YELLOW "[%s]: Shape: (%d , %d)\n" RESET,name,  (int) B.nrows , (int) B.ncols);
 	printf("\n");
 }
 
 
 Matrix  matrix_add(Matrix *A , Matrix *B)
 {
-	Matrix C = allocate(A->nrows , A->ncols);
+	Matrix C = {
+		.A = malloc(sizeof(float)* A->nrows * A->ncols),
+		.nrows = A->nrows,
+		.ncols = A->ncols,
+	};
+
+	if (C.A == NULL)
+	{
+		printf(BOLD RED "Failed to allocate memory.\n"RESET);
+		exit(EXIT_FAILURE);
+	}
 
 	if(A->ncols == B->ncols && A->nrows == B->nrows)
 	{
@@ -83,7 +80,7 @@ Matrix  matrix_add(Matrix *A , Matrix *B)
 	else
 	{
 		unload(&C);
-		fprintf(stderr, "Dimension Error.\n");
+		fprintf(stderr, BOLD RED "Dimension Error.\n"RESET);
 		return *(Matrix *) A;
 	}
 }
@@ -91,7 +88,17 @@ Matrix  matrix_add(Matrix *A , Matrix *B)
 
 Matrix  matrix_sub(Matrix *A , Matrix *B)
 {
-	Matrix C = allocate(A->nrows , A->ncols);
+	Matrix C = {
+		.A = malloc(sizeof(float)* A->nrows * A->ncols),
+		.nrows = A->nrows,
+		.ncols = A->ncols,
+	};
+
+	if (C.A == NULL)
+	{
+		printf(BOLD RED "Failed to allocate memory.\n"RESET);
+		exit(EXIT_FAILURE);
+	}
 
 	if(A->ncols == B->ncols && A->nrows == B->nrows)
 	{
@@ -109,7 +116,7 @@ Matrix  matrix_sub(Matrix *A , Matrix *B)
 	else
 	{
 		unload(&C);
-		fprintf(stderr, "Dimension Error.\n");
+		fprintf(stderr,BOLD RED "Dimension Error.\n" RESET);
 		return *(Matrix *) A;
 	}
 }
@@ -120,7 +127,17 @@ Matrix Hadamard_Product(Matrix * A, Matrix * B)
 	assert(A->ncols == B->ncols);
 	assert(A->nrows == B->nrows);
 
-	Matrix C = allocate(A->nrows , B->ncols);
+	Matrix C = {
+		.A = malloc(sizeof(float)* A->nrows * A->ncols),
+		.nrows = A->nrows,
+		.ncols = A->ncols,
+	};
+
+	if (C.A == NULL)
+	{
+		printf(BOLD RED"Failed to allocate memory.\n"RESET);
+		exit(EXIT_FAILURE);
+	}
 
 	for (int i = 0; i < (int) A->nrows; i++)
 	{
@@ -137,7 +154,7 @@ Matrix dot_product(Matrix * A, Matrix * B)
 {
 	if(A->ncols != B->nrows)
 	{
-		fprintf(stderr , "Cannot Multiply A->ncols( %lf ) != B->nrows( %lf ).\n", A->ncols,B->nrows);
+		fprintf(stderr , BOLD RED"Cannot Multiply A->ncols( %lf ) != B->nrows( %lf ).\n"RESET, A->ncols,B->nrows);
 		exit(EXIT_FAILURE);
 	}
 
@@ -151,7 +168,7 @@ Matrix dot_product(Matrix * A, Matrix * B)
 	assert(C.ncols == B->ncols);
 
 	if (C.A == NULL) {
-		perror("Failed to allocate memory");
+		printf(BOLD RED "Failed to allocate memory.\n"RESET);
 		exit(EXIT_FAILURE);
 	}
 
@@ -177,7 +194,17 @@ Matrix dot_product(Matrix * A, Matrix * B)
 
 Matrix inverse(Matrix *A)
 {
-	Matrix C = allocate(A->nrows , A->ncols);
+	Matrix C = {
+		.A = malloc(sizeof(float)* A->nrows * A->ncols),
+		.nrows = A->nrows,
+		.ncols = A->ncols,
+	};
+
+	if (C.A == NULL)
+	{
+		printf(BOLD RED "Failed to allocate memory.\n"RESET);
+		exit(EXIT_FAILURE);
+	}
 
 	for(int i = 0; i < (int) A->ncols; i++)
 	{
@@ -194,7 +221,17 @@ Matrix inverse(Matrix *A)
 
 Matrix Transpose(Matrix *A)
 {
-	Matrix C = allocate(A->nrows , A->ncols);
+	Matrix C = {
+		.A = malloc(sizeof(float)* A->nrows * A->ncols),
+		.nrows = A->ncols,
+		.ncols = A->nrows,
+	};
+
+	if (C.A == NULL)
+	{
+		printf(BOLD RED "Failed to allocate memory.\n"RESET);
+		exit(EXIT_FAILURE);
+	}
 
 	for(int i = 0; i < (int) A->ncols; i++)
 	{
@@ -210,18 +247,25 @@ Matrix Transpose(Matrix *A)
 }
 
 
-Matrix create_matrix(float nrows, float ncols)
+Matrix create_matrix(float nrows, float ncols , float value)
 {
-	Matrix C = allocate(nrows, ncols);
+	Matrix C = {
+		.A = malloc(sizeof(float)* nrows * ncols),
+		.nrows = nrows,
+		.ncols = ncols,
+	};
 
-	float k = 0;
+	if (C.A == NULL)
+	{
+		printf(BOLD RED "Failed to allocate memory.\n"RESET);
+		exit(EXIT_FAILURE);
+	}
 	for (int i = 0; i < (int)nrows; i++)
 	{
 		for (int j = 0; j < (int)ncols; j++)
 		{
 			int index = i * ncols + j;
-			C.A[index] = k + 1;
-			k++;
+			C.A[index] = value;
 		}
 	}
 	return C;
@@ -230,7 +274,17 @@ Matrix create_matrix(float nrows, float ncols)
 
 Matrix expected_matrix(Matrix *input)
 {
-	Matrix C = allocate(input->nrows, input->ncols);
+	Matrix C = {
+		.A = malloc(sizeof(float)* input->nrows * input->ncols),
+		.nrows = input->nrows,
+		.ncols = input->ncols,
+	};
+
+	if (C.A == NULL)
+	{
+		printf(BOLD RED "Failed to allocate memory.\n"RESET);
+		exit(EXIT_FAILURE);
+	}
 
 	for (int i = 0; i < (int) input->nrows; i++)
 	{
@@ -253,7 +307,7 @@ bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 			int index = (i * A.ncols) + j;
 			if(A.A[index] != B.A[index])
 			{
-				fprintf(stderr, "Error: Matrix '%s' != '%s'.\n",matrix_a , matrix_b);
+				fprintf(stderr, BOLD RED"Error: Matrix '%s' != '%s'.\n" RESET,matrix_a , matrix_b);
 				return false;
 			}
 		}
@@ -299,7 +353,7 @@ void train(Matrix *x , Matrix *w , Matrix *y , int epochs , float learn , int ma
             }
         }
 		if (epoch % max == 0 || epoch == epochs - 1) {
-            printf("Epoch %d, Cost: %lf\n", epoch, initial_cost);
+            printf(BOLD GREEN "Epoch %d, Cost: %lf\n" RESET, epoch, initial_cost);
         }
 		unload(&z);
 	}
