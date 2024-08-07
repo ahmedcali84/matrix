@@ -13,8 +13,8 @@ int main(int argc , char **argv)
 
 	int max_value = atoi(argv[1]);
 
-	Matrix V1 = random_matrix(max_value , 1 , 5);
-	Matrix V2 = random_matrix(max_value , 1 , 5);
+	Matrix V1 = random_matrix(max_value , 1 , 20);
+	Matrix V2 = random_matrix(max_value , 1 , 20);
 	Matrix V_T  = Transpose(&V2);
 
 	Matrix V3_dot = dot_product(&V1 , &V_T);
