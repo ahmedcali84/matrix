@@ -191,7 +191,7 @@ Matrix dot_product(Matrix * A, Matrix * B)
 	return C;
 }
 
-
+/*  *************** IN DEVELOPMENT , NOT COMPLETED YET *******************
 Matrix inverse(Matrix *A)
 {
 	Matrix C = {
@@ -211,13 +211,14 @@ Matrix inverse(Matrix *A)
 		for (int j = 0; j < (int) A->nrows; j++)
 		{
 			int indexC = (i * A->nrows) + j;
-			C.A[indexC] = 1.0f / A->A[indexC];
+			C.A[indexC] = A->A[indexC];
 		}
 	}
 	
 	return C;
 }
-
+*************************************************************************
+*/
 
 Matrix Transpose(Matrix *A)
 {
