@@ -17,8 +17,9 @@ typedef struct Matrix
 	float ncols;
 } Matrix;
 
-// Allocates Memory for a new Matrix
-Matrix allocate(float rows , float cols);
+/*
+************** MATRIX OPERATIONS FUNCTIONS DECLARATIONS *******************
+*/
 
 // Generates random Matrix(nrows x ncols)
 Matrix random_matrix(int max, float nrows , float ncols);
@@ -38,7 +39,7 @@ Matrix  matrix_sub(Matrix *A , Matrix *B);
 // Computes Element-wise Product of Two Matrices
 Matrix Hadamard_Product(Matrix * A, Matrix * B);
 
-// Computes the Dot-Product of  two Matrices
+// Computes the Dot-Product of  two Matrices || Two Vectors || a Vector and a Matrix
 Matrix dot_product(Matrix * A, Matrix * B);
 
 // Returns the Inverse of a Matrix (in-Works , will update when its finished)
@@ -54,7 +55,7 @@ bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
 #define TEST_MATRIX(A , B) Test_Matrix(A , B , #A ,#B)
 
 // Creates A Matrix of n,... , n+1 Matrix (For Development Purposes)
-Matrix create_matrix(float nrows, float ncols);
+Matrix create_matrix(float nrows, float ncols , float value);
 
 // Returns the doubled-version of created Matrix (For Development Purposes)
 Matrix expected_matrix(Matrix *input);
