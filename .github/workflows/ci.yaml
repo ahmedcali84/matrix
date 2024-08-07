@@ -24,4 +24,4 @@ jobs:
 
     - name: Run tests
       working-directory: src
-      run: ./main 10
+      run: valgrind ./main 10
