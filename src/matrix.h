@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <float.h>
+#include <stdint.h>
 #include <math.h>
 #include <stdbool.h>
 
@@ -21,8 +21,8 @@
 typedef struct Matrix
 {
 	float * A;
-	float nrows;
-	float ncols;
+	size_t nrows;
+	size_t ncols;
 } Matrix;
 
 /*
@@ -30,7 +30,7 @@ typedef struct Matrix
 */
 
 // Generates random Matrix(nrows x ncols)
-Matrix random_matrix(int max, float nrows , float ncols);
+Matrix random_matrix(int max, size_t nrows , size_t ncols);
 
 // Prints a Matrix
 void print_matrix(Matrix B, const char *name);
@@ -63,7 +63,7 @@ bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
 #define TEST_MATRIX(A , B) Test_Matrix(A , B , #A ,#B)
 
 // Creates A Matrix of n,... , n+1 Matrix (For Development Purposes)
-Matrix create_matrix(float nrows, float ncols , float value);
+Matrix create_matrix(size_t nrows, size_t ncols , size_t value);
 
 // Returns the doubled-version of created Matrix (For Development Purposes)
 Matrix expected_matrix(Matrix *input);
