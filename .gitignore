@@ -6,3 +6,4 @@ matrix.o
 image.h
 image.c
 *.o
+main2.c
