@@ -4,7 +4,7 @@
 
 #include "matrix.h"
 
-Matrix random_matrix(int max, float nrows , float ncols)
+Matrix random_matrix(int max, size_t nrows , size_t ncols)
 {
 	float * A = malloc(sizeof(float) * (nrows*ncols));
 	if (A == NULL) {
@@ -154,7 +154,7 @@ Matrix dot_product(Matrix * A, Matrix * B)
 {
 	if(A->ncols != B->nrows)
 	{
-		fprintf(stderr , BOLD RED"Cannot Multiply A->ncols( %lf ) != B->nrows( %lf ).\n"RESET, A->ncols,B->nrows);
+		fprintf(stderr , BOLD RED"Cannot Multiply A->ncols( %zu ) != B->nrows( %zu ).\n"RESET, A->ncols,B->nrows);
 		exit(EXIT_FAILURE);
 	}
 
@@ -248,7 +248,7 @@ Matrix Transpose(Matrix *A)
 }
 
 
-Matrix create_matrix(float nrows, float ncols , float value)
+Matrix create_matrix(size_t nrows, size_t ncols , size_t value)
 {
 	Matrix C = {
 		.A = malloc(sizeof(float)* nrows * ncols),
