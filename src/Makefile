@@ -1,35 +1,40 @@
+# Makefile for matrix operations project
+
 # Compiler
 CC = gcc
 
 # Compiler flags
-CFLAGS = -o3 -Wall -Wextra -g -std=c11 -ggdb -pedantic
-
-# Linker flags
-LDLIBS = -lm
+CFLAGS = -Wall -Wextra -std=c99 -O2 -Wno-unused-function 
 
 # Target executable
 TARGET = main
 
 # Source files
-SRCS = main.c matrix.c
+SRCS = main.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)
 
-# Default target
+# Header files
+HEADERS = matrix.h
+
+# Build target
 all: $(TARGET)
 
-# Rule to build the target executable
+# Rule to create the executable
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LDLIBS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) -lm
 
-# Rule to build object files from source files
-%.o: %.c
+# Rule to compile .c files to .o files
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean target to remove build artifacts
+# Clean up build files
 clean:
 	rm -f $(OBJS) $(TARGET)
 
-# Phony targets
-.PHONY: all clean
+# Run the program with default arguments (you can change 10 to any max value)
+run: $(TARGET)
+	./$(TARGET) 10
+
+.PHONY: all clean run
