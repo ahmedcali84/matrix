@@ -3,7 +3,4 @@
 main
 main.o
 matrix.o
-image.h
-image.c
 *.o
-main2.c
