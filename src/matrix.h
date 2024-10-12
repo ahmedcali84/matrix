@@ -22,61 +22,79 @@ typedef struct Matrix
 ************** MATRIX OPERATIONS FUNCTIONS DECLARATIONS *******************
 */
 
+//Get Specific Element from the Matrix
+MATDEF float GET_ELEMENT(Matrix C, size_t row, size_t col);
+
+// Set a specific element from the matrix to a new value
+MATDEF void SET_ELEMENT(Matrix C, size_t row, size_t col, float value);
+
 // Generates random Matrix(nrows x ncols)
-MATDEF Matrix random_matrix(int max, size_t nrows , size_t ncols);
+MATDEF Matrix RANDOM_MATRIX(int max, size_t nrows , size_t ncols);
 
 // Prints a Matrix
-MATDEF void print_matrix(Matrix B, const char *name);
+MATDEF void PRINT_MATRIX(Matrix B, const char *name);
 
 // Macro definition of a special print function
-#define PRINT(B) print_matrix(B , #B)
+#define PRINT(B) PRINT_MATRIX(B , #B)
 
-//Prints the shape of the matrix
-MATDEF int shape(Matrix A, const char *name);
+//Prints the SHAPE of the matrix
+MATDEF int MATRIX_SHAPE(Matrix A, const char *name);
 
-//Macro definition of a special shape printing function
-#define SHAPE(A) shape(A , #A)
+//Macro definition of a special SHAPE printing function
+#define SHAPE(A) MATRIX_SHAPE(A , #A)
 
 // Adds to Matrices
-MATDEF Matrix  matrix_add(Matrix *A , Matrix *B);
+MATDEF Matrix  MATRIX_ADD(Matrix *A , Matrix *B);
 
 // Subtracts two Matrices
-MATDEF Matrix  matrix_sub(Matrix *A , Matrix *B);
+MATDEF Matrix  MATRIX_SUBTRACT(Matrix *A , Matrix *B);
 
 // Computes Element-wise Product of Two Matrices
-MATDEF Matrix Hadamard_Product(Matrix * A, Matrix * B);
+MATDEF Matrix HAMADARD_PRODUCT(Matrix * A, Matrix * B);
 
 // Computes the Dot-Product of  two Matrices || Two Vectors || a Vector and a Matrix
-MATDEF Matrix dot_product(Matrix * A, Matrix * B);
+MATDEF Matrix DOT_PRODUCT(Matrix * A, Matrix * B);
 
-// Returns the Inverse of a Matrix (in-Works , will update when its finished)
-// Matrix inverse(Matrix *A);
-
-// Return Transpose of Matrix A
-MATDEF Matrix Transpose(Matrix *A);
+// Return TRANSPOSE of Matrix A
+MATDEF Matrix TRANSPOSE(Matrix *A);
 
 // Test Matrices
-MATDEF bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
+MATDEF bool TEST_MATRIX_EQUAL(Matrix A , Matrix B , char *matrix_a , char *matrix_b);
 
 // Special Macro Version of Test Matrix Function also prints the variable-name of the Matrix
-#define TEST_MATRIX(A , B) Test_Matrix(A , B , #A ,#B)
+#define TEST_MATRIX(A , B) TEST_MATRIX_EQUAL(A , B , #A ,#B)
 
 // Creates A Matrix of n,... , n+1 Matrix (For Development Purposes)
-MATDEF Matrix create_matrix(size_t nrows, size_t ncols , size_t value);
+MATDEF Matrix FILL(size_t nrows, size_t ncols , size_t FILL_value);
 
 // Returns the doubled-version of created Matrix (For Development Purposes)
-MATDEF Matrix expected_matrix(Matrix *input);
+MATDEF Matrix EXPECTED_MATRIX(Matrix *input);
+
+// Cost Function (CALCULATES MEAN SQUARE ERROR)
+MATDEF float MSE(float pred, float Y);
+
+// Simple Linear REGRESSION
+MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha);
 
 // Function to free Allocated Memory
-MATDEF void unload(Matrix *B);
+MATDEF void UNLOAD(Matrix *B);
 
 
 /*
 ************** MATRIX OPERATIONS FUNCTIONS IMPLEMENTATIONS *******************
 */
 
+MATDEF float GET_ELEMENT(Matrix C, size_t row, size_t col)
+{
+	return C.A[row * C.ncols + col];
+}
 
-MATDEF Matrix random_matrix(int max, size_t nrows , size_t ncols)
+MATDEF void SET_ELEMENT(Matrix C, size_t row, size_t col, float value)
+{
+	C.A[row * C.ncols + col] = value;
+}
+
+MATDEF Matrix RANDOM_MATRIX(int max, size_t nrows , size_t ncols)
 {
 	float * A = malloc(sizeof(float) * (nrows*ncols));
 	if (A == NULL) {
@@ -89,7 +107,7 @@ MATDEF Matrix random_matrix(int max, size_t nrows , size_t ncols)
 		for (int j = 0; j < (int) ncols; j++)
 		{
 			int index = i*ncols + j;
-			A[index] = rand() % max;
+			A[index] = ((float) rand() / (float) RAND_MAX) * max;
 		}
 	}
 
@@ -103,8 +121,7 @@ MATDEF Matrix random_matrix(int max, size_t nrows , size_t ncols)
 	return dummy;
 }
 
-
-MATDEF void print_matrix(Matrix B, const char *name)
+MATDEF void PRINT_MATRIX(Matrix B, const char *name)
 {
 	printf("%s = [\n", name);
 	for (int i = 0; i < (int) B.nrows; i++)
@@ -112,23 +129,21 @@ MATDEF void print_matrix(Matrix B, const char *name)
 		for (int j = 0; j < (int) B.ncols; j++)
 		{
 			int index = i*B.ncols + j;
-			printf(" %.2f ", B.A[index]);
+			printf(" %f ", B.A[index]);
 		}
 		printf("\n");
 	}
 	printf("]");
-	printf("\n");
+	printf("\n\n");
 }
 
-
-MATDEF int shape(Matrix A, const char *name)
+MATDEF int MATRIX_SHAPE(Matrix A, const char *name)
 {
-	printf("%s(Shape: (%d , %d))\n",name, (int) A.nrows , (int) A.ncols);
+	printf("%s(SHAPE: (%d , %d))\n",name, (int) A.nrows , (int) A.ncols);
 	return 0;
 }
 
-
-MATDEF Matrix  matrix_add(Matrix *A , Matrix *B)
+MATDEF Matrix  MATRIX_ADD(Matrix *A , Matrix *B)
 {
 	Matrix C = {
 		.A = malloc(sizeof(float)* A->nrows * A->ncols),
@@ -157,14 +172,13 @@ MATDEF Matrix  matrix_add(Matrix *A , Matrix *B)
 	}
 	else
 	{
-		unload(&C);
+		UNLOAD(&C);
 		fprintf(stderr, "Dimension Error.\n");
 		return *(Matrix *) A;
 	}
 }
 
-
-MATDEF Matrix  matrix_sub(Matrix *A , Matrix *B)
+MATDEF Matrix  MATRIX_SUBTRACT(Matrix *A , Matrix *B)
 {
 	Matrix C = {
 		.A = malloc(sizeof(float)* A->nrows * A->ncols),
@@ -193,14 +207,13 @@ MATDEF Matrix  matrix_sub(Matrix *A , Matrix *B)
 	}
 	else
 	{
-		unload(&C);
+		UNLOAD(&C);
 		fprintf(stderr,  "Dimension Error.\n");
 		return *(Matrix *) A;
 	}
 }
 
-
-MATDEF Matrix Hadamard_Product(Matrix * A, Matrix * B)
+MATDEF Matrix HAMADARD_PRODUCT(Matrix * A, Matrix * B)
 {
 	assert(A->ncols == B->ncols);
 	assert(A->nrows == B->nrows);
@@ -228,7 +241,7 @@ MATDEF Matrix Hadamard_Product(Matrix * A, Matrix * B)
 	return C;
 }
 
-MATDEF Matrix dot_product(Matrix * A, Matrix * B)
+MATDEF Matrix DOT_PRODUCT(Matrix * A, Matrix * B)
 {
 	if(A->ncols != B->nrows)
 	{
@@ -269,36 +282,7 @@ MATDEF Matrix dot_product(Matrix * A, Matrix * B)
 	return C;
 }
 
-/*  *************** IN DEVELOPMENT , NOT COMPLETED YET *******************
-Matrix inverse(Matrix *A)
-{
-	Matrix C = {
-		.A = malloc(sizeof(float)* A->nrows * A->ncols),
-		.nrows = A->nrows,
-		.ncols = A->ncols,
-	};
-
-	if (C.A == NULL)
-	{
-		printf(  "Failed to allocate memory.\n);
-		exit(EXIT_FAILURE);
-	}
-
-	for(int i = 0; i < (int) A->ncols; i++)
-	{
-		for (int j = 0; j < (int) A->nrows; j++)
-		{
-			int indexC = (i * A->nrows) + j;
-			C.A[indexC] = A->A[indexC];
-		}
-	}
-	
-	return C;
-}
-*************************************************************************
-*/
-
-MATDEF Matrix Transpose(Matrix *A)
+MATDEF Matrix TRANSPOSE(Matrix *A)
 {
 	Matrix C = {
 		.A = malloc(sizeof(float)* A->nrows * A->ncols),
@@ -325,8 +309,7 @@ MATDEF Matrix Transpose(Matrix *A)
 	return C;
 }
 
-
-MATDEF Matrix create_matrix(size_t nrows, size_t ncols , size_t value)
+MATDEF Matrix FILL(size_t nrows, size_t ncols , size_t FILL_value)
 {
 	Matrix C = {
 		.A = malloc(sizeof(float)* nrows * ncols),
@@ -344,40 +327,21 @@ MATDEF Matrix create_matrix(size_t nrows, size_t ncols , size_t value)
 		for (int j = 0; j < (int)ncols; j++)
 		{
 			int index = i * ncols + j;
-			C.A[index] = value;
+			C.A[index] = FILL_value;
 		}
 	}
 	return C;
 }
 
-
-MATDEF Matrix expected_matrix(Matrix *input)
+MATDEF Matrix EXPECTED_MATRIX(Matrix *input)
 {
-	Matrix C = {
-		.A = malloc(sizeof(float)* input->nrows * input->ncols),
-		.nrows = input->nrows,
-		.ncols = input->ncols,
-	};
+	Matrix C = FILL(1, 1, 2);
 
-	if (C.A == NULL)
-	{
-		printf(  "Failed to allocate memory.\n");
-		exit(EXIT_FAILURE);
-	}
-
-	for (int i = 0; i < (int) input->nrows; i++)
-	{
-		for (int j = 0; j < (int) input->ncols; j++)
-		{
-			int index = i * input->ncols + j;
-			C.A[index] = input->A[index] * 2;
-		}
-	}
-	return C;
+	Matrix output = DOT_PRODUCT(input, &C);
+	return output;
 }
 
-
-MATDEF bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
+MATDEF bool TEST_MATRIX_EQUAL(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 {
 	for (int i = 0 ; i < (int) A.nrows; i++)
 	{
@@ -395,16 +359,81 @@ MATDEF bool Test_Matrix(Matrix A , Matrix B , char *matrix_a , char *matrix_b)
 	return true;
 }
 
+MATDEF float MSE(float pred, float Y)
+{
+	float d = pred - Y;
+	return d*d;
+}
 
-MATDEF void unload(Matrix *B)
+MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha)
+{
+	Matrix pred = DOT_PRODUCT(&Ws, &X);
+
+	for (size_t i = 0; i < pred.nrows; ++i) 
+	{
+        for (size_t j = 0; j < pred.ncols; ++j) 
+		{
+            int index = i * pred.ncols + j;
+            pred.A[index] += GET_ELEMENT(bias, 0, j); // Add bias to each prediction
+        }
+    }
+	printf("Initial Predictions: ");
+	PRINT(pred);
+	for (int epoch = 0; epoch < epochs; ++epoch)
+	{
+		for (size_t i = 0; i < Ws.nrows; ++i)
+		{
+			for (size_t j = 0; j < Ws.ncols; ++j)
+			{
+				float w = GET_ELEMENT(Ws, i, j);
+
+				float gradient = 0.0f;
+				for (size_t k = 0; k < pred.nrows; ++k)
+				{
+					for (size_t m = 0; m < pred.ncols; ++m)
+					{
+						int index = k * pred.ncols + m;
+						float error = actual.A[index] - pred.A[index];
+						gradient+= (-2 * error * GET_ELEMENT(X, index, j));
+					}
+				}
+				w = w - alpha * gradient;
+				SET_ELEMENT(Ws, i , j , w);
+			}
+		}
+
+		Matrix new_pred = DOT_PRODUCT(&Ws, &X);
+		for (size_t i = 0; i < new_pred.nrows; ++i) 
+		{
+            for (size_t j = 0; j < new_pred.ncols; ++j) 
+			{
+                int index = i * new_pred.ncols + j;
+                new_pred.A[index] += GET_ELEMENT(bias, 0, j);
+            }
+        }
+		UNLOAD(&pred);
+		pred = new_pred;
+
+		if (epoch % 1 == 0 || epoch == epochs - 1)
+		{
+			for (size_t i = 0; i < pred.nrows; ++i)
+			{
+				for (size_t j = 0; j < pred.ncols; ++j)
+				{
+					int index = i * pred.ncols + j;
+					printf("Epoch =  %d, Cost = %f, Pred: %f, Actual = %f\n", epoch, MSE(pred.A[index], actual.A[index]), pred.A[index], actual.A[index]);
+				}
+			}
+		}
+	}
+	PRINT(pred);
+	UNLOAD(&pred);
+}
+
+MATDEF void UNLOAD(Matrix *B)
 {
 	free(B->A);
 	B->A = NULL;
 }
-
-// TODO: MATRIX INVERSION
-// TODO: DETERMINANT
-// TODO: 
-
 
 #endif //MATRIX_H
