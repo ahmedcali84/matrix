@@ -7,10 +7,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -O2 -Wno-unused-function 
 
 # Target executable
-TARGET = main
+TARGET = test_cases
 
 # Source files
-SRCS = main.c
+SRCS = test_cases.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)
