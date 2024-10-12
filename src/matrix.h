@@ -381,43 +381,93 @@ MATDEF float MSE(float pred, float Y)
 
 MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha)
 {
-    // Loop over the specified number of epochs for training
-    for (int i = 0; i < epochs; i++)
+    // Calculate initial predictions by performing the dot product of weights and input features
+    Matrix pred = DOT_PRODUCT(&Ws, &X);
+
+    // Add bias to each prediction
+    for (size_t i = 0; i < pred.nrows; ++i) 
     {
-        Matrix preds = DOT_PRODUCT(&X, &Ws); // Calculate predictions
-        preds = MATRIX_ADD(&preds, &bias); // Add bias to predictions
-
-        // Calculate loss and print it
-        float loss = 0;
-        for (int j = 0; j < (int)preds.nrows; j++)
+        for (size_t j = 0; j < pred.ncols; ++j) 
         {
-            loss += MSE(GET_ELEMENT(preds, j, 0), GET_ELEMENT(actual, j, 0)); // Accumulate MSE
+            int index = i * pred.ncols + j;
+            pred.A[index] += GET_ELEMENT(bias, 0, j); // Add bias to each prediction
         }
-        printf("Epoch %d: Loss = %f\n", i + 1, loss / preds.nrows); // Print average loss
-
-        // Update weights and bias based on gradient descent
-        for (int j = 0; j < (int)Ws.nrows; j++)
-        {
-            float gradient = 0;
-            for (int k = 0; k < (int)preds.nrows; k++)
-            {
-                gradient += (GET_ELEMENT(preds, k, 0) - GET_ELEMENT(actual, k, 0)) * GET_ELEMENT(X, k, j); // Calculate gradient
-            }
-            SET_ELEMENT(Ws, j, 0, GET_ELEMENT(Ws, j, 0) - alpha * (gradient / preds.nrows)); // Update weights
-        }
-        for (int j = 0; j < (int)bias.nrows; j++)
-        {
-            float gradient = 0;
-            for (int k = 0; k < (int)preds.nrows; k++)
-            {
-                gradient += (GET_ELEMENT(preds, k, 0) - GET_ELEMENT(actual, k, 0)); // Calculate bias gradient
-            }
-            SET_ELEMENT(bias, j, 0, GET_ELEMENT(bias, j, 0) - alpha * (gradient / preds.nrows)); // Update bias
-        }
-
-        UNLOAD(&preds); // Free allocated memory for predictions
     }
+    
+    // Print initial predictions
+    printf("Initial Predictions: ");
+    PRINT(pred);
+
+    // Main loop for the number of epochs
+    for (int epoch = 0; epoch < epochs; ++epoch)
+    {
+        // Update weights for each feature
+        for (size_t i = 0; i < Ws.nrows; ++i)
+        {
+            for (size_t j = 0; j < Ws.ncols; ++j)
+            {
+                // Retrieve the current weight
+                float w = GET_ELEMENT(Ws, i, j);
+
+                float gradient = 0.0f; // Initialize gradient for this weight
+                
+                // Calculate gradient based on predictions and actual values
+                for (size_t k = 0; k < pred.nrows; ++k)
+                {
+                    for (size_t m = 0; m < pred.ncols; ++m)
+                    {
+                        int index = k * pred.ncols + m;
+                        // Calculate the error between actual and predicted values
+                        float error = actual.A[index] - pred.A[index];
+                        // Accumulate the gradient for the weight
+                        gradient += (-2 * error * GET_ELEMENT(X, index, j));
+                    }
+                }
+                // Update the weight using gradient descent
+                w = w - alpha * gradient;
+                SET_ELEMENT(Ws, i , j , w); // Set the new weight
+            }
+        }
+
+        // Recalculate predictions after updating weights
+        Matrix new_pred = DOT_PRODUCT(&Ws, &X);
+        
+        // Add bias to the new predictions
+        for (size_t i = 0; i < new_pred.nrows; ++i) 
+        {
+            for (size_t j = 0; j < new_pred.ncols; ++j) 
+            {
+                int index = i * new_pred.ncols + j;
+                new_pred.A[index] += GET_ELEMENT(bias, 0, j);
+            }
+        }
+        
+        // Unload the old predictions
+        UNLOAD(&pred);
+        pred = new_pred; // Update predictions with the new values
+
+        // Print cost and predictions at each epoch
+        if (epoch % 1 == 0 || epoch == epochs - 1)
+        {
+            for (size_t i = 0; i < pred.nrows; ++i)
+            {
+                for (size_t j = 0; j < pred.ncols; ++j)
+                {
+                    int index = i * pred.ncols + j;
+                    // Calculate and print the Mean Squared Error (MSE), predicted value, and actual value
+                    printf("Epoch =  %d, Cost = %f, Pred: %f, Actual = %f\n", 
+                           epoch, MSE(pred.A[index], actual.A[index]), 
+                           pred.A[index], actual.A[index]);
+                }
+            }
+        }
+    }
+    
+    // Print final predictions after training
+    PRINT(pred);
+    UNLOAD(&pred); // Clean up memory for predictions
 }
+
 
 MATDEF void UNLOAD(Matrix *B)
 {
