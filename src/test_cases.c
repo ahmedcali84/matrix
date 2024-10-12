@@ -130,7 +130,7 @@ void TEST_REGRESSION()
     Matrix Ws = FILL(2, 2, 0.1); // Initial weights
     Matrix bias = FILL(1, 2, 0); // Bias
     Matrix actual = FILL(2, 2, 5);  // Actual output
-    REGRESSION(10, X, Ws, bias, actual, 0.01);  // TEST simple REGRESSION
+    REGRESSION(10, X, Ws, bias, actual, 0.1);  // TEST simple REGRESSION
     UNLOAD(&X); UNLOAD(&Ws); UNLOAD(&bias); UNLOAD(&actual);
 }
 
