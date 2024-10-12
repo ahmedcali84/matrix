@@ -8,8 +8,6 @@ This repository contains a collection of matrix operations implemented in C. The
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Files](#files)
-  - [Contributing](#contributing)
   - [License](#license)
   - [Contact](#contact)
 
@@ -43,34 +41,6 @@ The program performs various matrix operations. You can specify the maximum valu
     ```bash
     ./main 10 
     ```
-
-   This will generate matrices with random values between 0 and 9.
-
-You can also modify the `src/main.c` file to include your own matrix data and operations. Here is a brief overview of the files and their purposes:
-
-- `src/main.c`: Contains the main function and example usage of matrix operations.
-- `src/matrix.c`: Contains the implementation of matrix operations.
-- `src/matrix.h`: Header file declaring the functions for matrix operations.
-
-## Files
-
-- `Makefile`: Used to compile the project.
-- `main.c`: The entry point of the program.
-- `matrix.c`: Implementation of matrix operations.
-- `matrix.h`: Header file with function declarations.
-- `.gitignore`: Specifies files to ignore in the repository.
-- `matrix.aux`, `matrix.log`: Generated files that should be ignored.
-
-## Contributing
-
-Contributions are welcome! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes and commit them (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Create a new Pull Request.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
