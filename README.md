@@ -1,7 +1,7 @@
 # Matrix Operations
 
 > [!WARNING]
-> This library is a work in progress. Features may change, and there may be bugs. Your feedback is welcome!**
+> **This library is a work in progress. Features may change, and there may be bugs. Your feedback is welcome!**
 
 This repository contains a collection of matrix operations implemented in C. The project demonstrates fundamental matrix operations such as addition, subtraction, multiplication, and transposition. Matrix operations are essential in various fields, including computer graphics, physics simulations, and machine learning.
 
