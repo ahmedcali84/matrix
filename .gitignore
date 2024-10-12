@@ -1,7 +1,6 @@
 *.log
 *.aux
-main
-main.o
+test_cases
 matrix.o
 *.o
 .vscode/
