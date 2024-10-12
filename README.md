@@ -1,5 +1,12 @@
 # Matrix Operations
 
+<p align="center">
+    <a href="https://github.com/ahmedcali84/matrix/tree/main/src">
+        <img src="background.png">
+    </a>
+</p>
+
+
 > [!WARNING]
 > **This library is a work in progress. Features may change, and there may be bugs. Your feedback is welcome!**
 
