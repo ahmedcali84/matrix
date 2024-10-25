@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <math.h>
 #include <stdbool.h>
+#include <limits.h>
+#include <float.h>
 
 #define MATDEF static // Define a macro for static functions
 
@@ -22,62 +24,28 @@ typedef struct Matrix
 ************** MATRIX OPERATIONS FUNCTIONS DECLARATIONS *******************
 */
 
-// Get Specific Element from the Matrix
-MATDEF float GET_ELEMENT(Matrix C, size_t row, size_t col);
+MATDEF float GET_ELEMENT(Matrix C, size_t row, size_t col);                                        // Get Specific Element from the Matrix
+MATDEF void SET_ELEMENT(Matrix C, size_t row, size_t col, float value);                            // Set a specific element from the matrix to a new value
+MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols);                                           // Generates random Matrix(nrows x ncols)
+MATDEF void PRINT_MATRIX(Matrix B, const char *name);                                              // Prints a Matrix
+MATDEF int MATRIX_SHAPE(Matrix A, const char *name);                                               // Prints the SHAPE of the matrix
+MATDEF Matrix MATRIX_ADD(Matrix *A, Matrix *B);                                                    // Adds two Matrices
+MATDEF Matrix MATRIX_SUBTRACT(Matrix *A, Matrix *B);                                               // Subtracts two Matrices
+MATDEF Matrix HADAMARD_PRODUCT(Matrix *A, Matrix *B);                                              // Computes Element-wise Product of Two Matrices
+MATDEF Matrix* DOT_PRODUCT(Matrix *A, Matrix *B);                                                  // Computes the Dot-Product of two Matrices
+MATDEF Matrix TRANSPOSE(Matrix *A);                                                                // Return TRANSPOSE of Matrix A
+MATDEF bool TEST_MATRIX_EQUAL(Matrix A, Matrix B, char *matrix_a, char *matrix_b);                 // Test Matrices for equality
+MATDEF Matrix FILL(size_t nrows, size_t ncols, float FILL_value);                                  // Creates A Matrix filled with a specific value (For Development Purposes)
+MATDEF Matrix EXPECTED_MATRIX(size_t nrows, size_t ncols, float value);                            // Returns the doubled-version of created Matrix (For Development Purposes)
+MATDEF float MSE(float pred, float Y);                                                             // Cost Function (CALCULATES MEAN SQUARE ERROR)
+MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha);  // Linear REGRESSION
+MATDEF void UNLOAD(Matrix *B);                                                                     // Function to free Allocated Memory
 
-// Set a specific element from the matrix to a new value
-MATDEF void SET_ELEMENT(Matrix C, size_t row, size_t col, float value);
+// Special Macro Functions
+#define PRINT(B) PRINT_MATRIX(B, #B)                                                               // Macro definition of a special print function
+#define SHAPE(A) MATRIX_SHAPE(A, #A)                                                               // Macro definition of a special SHAPE printing function
+#define TEST_MATRIX(A, B) TEST_MATRIX_EQUAL(A, B, #A, #B)                                          // Special Macro Version of Test Matrix Function also prints the variable-name of the Matrix
 
-// Generates random Matrix(nrows x ncols)
-MATDEF Matrix RANDOM_MATRIX(int max, size_t nrows, size_t ncols);
-
-// Prints a Matrix
-MATDEF void PRINT_MATRIX(Matrix B, const char *name);
-
-// Macro definition of a special print function
-#define PRINT(B) PRINT_MATRIX(B, #B)
-
-// Prints the SHAPE of the matrix
-MATDEF int MATRIX_SHAPE(Matrix A, const char *name);
-
-// Macro definition of a special SHAPE printing function
-#define SHAPE(A) MATRIX_SHAPE(A, #A)
-
-// Adds two Matrices
-MATDEF Matrix MATRIX_ADD(Matrix *A, Matrix *B);
-
-// Subtracts two Matrices
-MATDEF Matrix MATRIX_SUBTRACT(Matrix *A, Matrix *B);
-
-// Computes Element-wise Product of Two Matrices
-MATDEF Matrix HAMADARD_PRODUCT(Matrix *A, Matrix *B);
-
-// Computes the Dot-Product of two Matrices || Two Vectors || a Vector and a Matrix
-MATDEF Matrix DOT_PRODUCT(Matrix *A, Matrix *B);
-
-// Return TRANSPOSE of Matrix A
-MATDEF Matrix TRANSPOSE(Matrix *A);
-
-// Test Matrices for equality
-MATDEF bool TEST_MATRIX_EQUAL(Matrix A, Matrix B, char *matrix_a, char *matrix_b);
-
-// Special Macro Version of Test Matrix Function also prints the variable-name of the Matrix
-#define TEST_MATRIX(A, B) TEST_MATRIX_EQUAL(A, B, #A, #B)
-
-// Creates A Matrix filled with a specific value (For Development Purposes)
-MATDEF Matrix FILL(size_t nrows, size_t ncols, size_t FILL_value);
-
-// Returns the doubled-version of created Matrix (For Development Purposes)
-MATDEF Matrix EXPECTED_MATRIX(Matrix *input);
-
-// Cost Function (CALCULATES MEAN SQUARE ERROR)
-MATDEF float MSE(float pred, float Y);
-
-// Simple Linear REGRESSION
-MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha);
-
-// Function to free Allocated Memory
-MATDEF void UNLOAD(Matrix *B);
 
 /*
 ************** MATRIX OPERATIONS FUNCTIONS IMPLEMENTATIONS *******************
@@ -85,6 +53,13 @@ MATDEF void UNLOAD(Matrix *B);
 
 MATDEF float GET_ELEMENT(Matrix C, size_t row, size_t col)
 {
+    // Check for valid indices
+    if (row >= C.nrows || col >= C.ncols) {
+        fprintf(stderr, "Index out of bounds: [%zu, %zu] for matrix size [%zu, %zu]\n",
+                row, col, C.nrows, C.ncols);
+        exit(EXIT_FAILURE); // Handle the error, exit or return an error value
+    }
+    
     // Retrieve an element from the matrix at the specified row and column
     return C.A[row * C.ncols + col];
 }
@@ -95,7 +70,7 @@ MATDEF void SET_ELEMENT(Matrix C, size_t row, size_t col, float value)
     C.A[row * C.ncols + col] = value;
 }
 
-MATDEF Matrix RANDOM_MATRIX(int max, size_t nrows, size_t ncols)
+MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols)
 {
     // Allocate memory for the matrix elements
     float *A = malloc(sizeof(float) * (nrows * ncols));
@@ -110,7 +85,7 @@ MATDEF Matrix RANDOM_MATRIX(int max, size_t nrows, size_t ncols)
         for (int j = 0; j < (int)ncols; j++)
         {
             int index = i * ncols + j;
-            A[index] = ((float)rand() / (float)RAND_MAX) * max; // Scale random value
+            A[index] = (float)rand() / RAND_MAX * 20.0f - 10.0f; // random values between -1 and 1
         }
     }
 
@@ -222,7 +197,7 @@ MATDEF Matrix MATRIX_SUBTRACT(Matrix *A, Matrix *B)
     }
 }
 
-MATDEF Matrix HAMADARD_PRODUCT(Matrix *A, Matrix *B)
+MATDEF Matrix HADAMARD_PRODUCT(Matrix *A, Matrix *B)
 {
     // Ensure matrices are of the same size
     assert(A->ncols == B->ncols);
@@ -254,38 +229,38 @@ MATDEF Matrix HAMADARD_PRODUCT(Matrix *A, Matrix *B)
     return C; // Return the result matrix
 }
 
-MATDEF Matrix DOT_PRODUCT(Matrix *A, Matrix *B)
+MATDEF Matrix* DOT_PRODUCT(Matrix *A, Matrix *B)
 {
     // Check if the matrices can be multiplied
-    if (A->ncols != B->nrows)
+    if (A->ncols != B->nrows) 
     {
         fprintf(stderr, "Cannot Multiply A->ncols( %zu ) != B->nrows( %zu ).\n", A->ncols, B->nrows);
         exit(EXIT_FAILURE);
     }
 
     // Initialize a new matrix for the result
-    Matrix C = {
-        .A = malloc(sizeof(float) * A->nrows * B->ncols),
-        .nrows = A->nrows,
-        .ncols = B->ncols,
-    };
+    Matrix *C = malloc(sizeof(Matrix));
+
+    C->nrows = A->nrows;
+    C->ncols = B->ncols;
+    C->A = malloc(sizeof(float) * C->nrows * C->ncols);
 
     // Check for memory allocation failure
-    if (C.A == NULL)
+    if (C->A == NULL)
     {
         printf("Failed to allocate memory.\n");
         exit(EXIT_FAILURE);
     }
 
     // Calculate the dot product
-    for (int i = 0; i < (int)C.nrows; i++)
+    for (int i = 0; i < (int)C->nrows; i++)
     {
-        for (int j = 0; j < (int)C.ncols; j++)
+        for (int j = 0; j < (int)C->ncols; j++)
         {
-            C.A[i * C.ncols + j] = 0; // Initialize to zero
+            C->A[i * C->ncols + j] = 0; // Initialize to zero
             for (int k = 0; k < (int)A->ncols; k++)
             {
-                C.A[i * C.ncols + j] += A->A[i * A->ncols + k] * B->A[k * B->ncols + j]; // Sum products
+                C->A[i * C->ncols + j] += A->A[i * A->ncols + k] * B->A[k * B->ncols + j]; // Sum products
             }
         }
     }
@@ -344,7 +319,7 @@ MATDEF bool TEST_MATRIX_EQUAL(Matrix A, Matrix B, char *matrix_a, char *matrix_b
     return true; // Equal
 }
 
-MATDEF Matrix FILL(size_t nrows, size_t ncols, size_t FILL_value)
+MATDEF Matrix FILL(size_t nrows, size_t ncols, float FILL_value)
 {
     // Allocate memory for the matrix
     Matrix A;
@@ -361,16 +336,39 @@ MATDEF Matrix FILL(size_t nrows, size_t ncols, size_t FILL_value)
 
     // Fill the matrix with the specified value
     for (size_t i = 0; i < nrows; i++)
+    {
         for (size_t j = 0; j < ncols; j++)
-            A.A[i * ncols + j] = (float)FILL_value; // Set all elements
-
+        {
+            A.A[i * ncols + j] = FILL_value; // Set all elements
+        }
+    }
     return A; // Return the filled matrix
 }
 
-MATDEF Matrix EXPECTED_MATRIX(Matrix *input)
+MATDEF Matrix EXPECTED_MATRIX(size_t nrows, size_t ncols, float value)
 {
-    // Return a filled matrix (used for testing)
-    return FILL(input->nrows, input->ncols, 1); // Fill with 1
+    // Allocate memory for the matrix
+    Matrix A;
+    A.nrows = nrows;
+    A.ncols = ncols;
+    A.A = malloc(sizeof(float) * (nrows * ncols));
+
+    // Check for memory allocation failure
+    if (A.A == NULL)
+    {
+        printf("Failed to allocate memory.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Fill the matrix with the specified value
+    for (size_t i = 0; i < nrows; i++)
+    {
+        for (size_t j = 0; j < ncols; j++)
+        {
+            A.A[i * ncols + j] = (value * (value + j)); // Set all elements
+        }
+    }
+    return A; // Return the filled matrix
 }
 
 MATDEF float MSE(float pred, float Y)
@@ -382,92 +380,115 @@ MATDEF float MSE(float pred, float Y)
 MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha)
 {
     // Calculate initial predictions by performing the dot product of weights and input features
-    Matrix pred = DOT_PRODUCT(&Ws, &X);
+    Matrix *pred = DOT_PRODUCT(&X, &Ws);
+
+    // Print initial predictions Before Bias
+    printf("Initial Predictions Before Bias: ");
+    PRINT(*pred);
 
     // Add bias to each prediction
-    for (size_t i = 0; i < pred.nrows; ++i) 
+    for (size_t i = 0; i < pred->nrows; ++i) 
     {
-        for (size_t j = 0; j < pred.ncols; ++j) 
+        for (size_t j = 0; j < pred->ncols; ++j) 
         {
-            int index = i * pred.ncols + j;
-            pred.A[index] += GET_ELEMENT(bias, 0, j); // Add bias to each prediction
+            size_t index = i * pred->ncols + j;
+            pred->A[index] += GET_ELEMENT(bias, 0, 0); // Add bias to each prediction
         }
     }
     
-    // Print initial predictions
-    printf("Initial Predictions: ");
-    PRINT(pred);
+    // Print initial predictions After Bias
+    printf("Initial Predictions After Bias: ");
+    PRINT(*pred);
 
     // Main loop for the number of epochs
     for (int epoch = 0; epoch < epochs; ++epoch)
     {
+        float total_cost = 0.0;
         // Update weights for each feature
         for (size_t i = 0; i < Ws.nrows; ++i)
         {
             for (size_t j = 0; j < Ws.ncols; ++j)
             {
-                // Retrieve the current weight
-                float w = GET_ELEMENT(Ws, i, j);
+                float w = GET_ELEMENT(Ws, i, j); // Retrieve the current weight
+                float b = GET_ELEMENT(bias, 0, j); // Retrieve the current bias
 
-                float gradient = 0.0f; // Initialize gradient for this weight
-                
-                // Calculate gradient based on predictions and actual values
-                for (size_t k = 0; k < pred.nrows; ++k)
+                float gradient_w = 0.0f; // Initialize gradient for this weight
+                float gradient_b = 0.0f; // Initialize gradient for this bias
+
+                // Calculate gradients based on predictions and actual values
+                for (size_t k = 0; k < pred->nrows; ++k)
                 {
-                    for (size_t m = 0; m < pred.ncols; ++m)
+                    for (size_t m = 0; m < pred->ncols; ++m)
                     {
-                        int index = k * pred.ncols + m;
-                        // Calculate the error between actual and predicted values
-                        float error = actual.A[index] - pred.A[index];
-                        // Accumulate the gradient for the weight
-                        gradient += (-2 * error * GET_ELEMENT(X, index, j));
+                        size_t index_pred = k * pred->ncols + m;
+                        size_t index_actual = k * actual.ncols + m; // Adjust according to actual dimensions
+                        
+                        if (index_pred < pred->nrows * pred->ncols && index_actual < actual.nrows * actual.ncols) // Ensure indices are valid
+                        {
+                            // Calculate the error between actual and predicted values
+                            float error = actual.A[index_actual] - pred->A[index_pred];
+                            // Accumulate the gradient for the weight
+                            gradient_w += (-2 * error * GET_ELEMENT(X, k, j)); // X index based on row k
+                            gradient_b += (-2 * error); // bias doesnn't depend on X
+
+                            // Accumulate the total cost (Mean Squared Error)
+                            total_cost += error * error;
+                        }
                     }
                 }
                 // Update the weight using gradient descent
-                w = w - alpha * gradient;
-                SET_ELEMENT(Ws, i , j , w); // Set the new weight
+                w = w - alpha * gradient_w;
+                SET_ELEMENT(Ws, i, j, w); // Set the new weight
+
+                b = b - alpha * gradient_b;
+                SET_ELEMENT(bias, 0, j, b); // Set the new weight
             }
         }
 
         // Recalculate predictions after updating weights
-        Matrix new_pred = DOT_PRODUCT(&Ws, &X);
+        Matrix *new_pred = DOT_PRODUCT(&X, &Ws);
         
         // Add bias to the new predictions
-        for (size_t i = 0; i < new_pred.nrows; ++i) 
+        for (size_t i = 0; i < new_pred->nrows; ++i) 
         {
-            for (size_t j = 0; j < new_pred.ncols; ++j) 
+            for (size_t j = 0; j < new_pred->ncols; ++j) 
             {
-                int index = i * new_pred.ncols + j;
-                new_pred.A[index] += GET_ELEMENT(bias, 0, j);
+                size_t index = i * new_pred->ncols + j;
+                new_pred->A[index] += GET_ELEMENT(bias, 0, 0);
             }
         }
         
         // Unload the old predictions
-        UNLOAD(&pred);
+        UNLOAD(pred);
         pred = new_pred; // Update predictions with the new values
 
+        // Compute average total cost
+        total_cost /= (pred->nrows * pred->ncols); 
+
         // Print cost and predictions at each epoch
-        if (epoch % 1 == 0 || epoch == epochs - 1)
+        if (epoch % 10 == 0 || epoch == epochs - 1)
         {
-            for (size_t i = 0; i < pred.nrows; ++i)
+            for (size_t i = 0; i < pred->nrows; ++i)
             {
-                for (size_t j = 0; j < pred.ncols; ++j)
+                for (size_t j = 0; j < pred->ncols; ++j)
                 {
-                    int index = i * pred.ncols + j;
-                    // Calculate and print the Mean Squared Error (MSE), predicted value, and actual value
-                    printf("Epoch =  %d, Cost = %f, Pred: %f, Actual = %f\n", 
-                           epoch, MSE(pred.A[index], actual.A[index]), 
-                           pred.A[index], actual.A[index]);
+                    size_t index = i * pred->ncols + j;
+                    if (index < pred->nrows * pred->ncols) // Ensure index is valid
+                    {
+                        // Calculate and print the Mean Squared Error (MSE), predicted value, and actual value
+                        printf("Epoch =  %d, Cost = %f, Pred: %f, Actual = %f\n", 
+                               epoch, total_cost, 
+                               pred->A[index], actual.A[index]);
+                    }
                 }
             }
         }
     }
     
     // Print final predictions after training
-    PRINT(pred);
-    UNLOAD(&pred); // Clean up memory for predictions
+    // PRINT(*pred);
+    UNLOAD(pred); // Clean up memory for predictions
 }
-
 
 MATDEF void UNLOAD(Matrix *B)
 {
