@@ -34,8 +34,10 @@ void TEST_RANDOM_MATRIX()
     Matrix A = RANDOM_MATRIX(2, 2);  // Create a 2x2 Matrix with Random elements [0, 10]
     assert(A.nrows == 2 && A.ncols == 2 && "RANDOM_MATRIX failed: unexpected dimensions");
 
-    for (size_t i = 0; i < A.nrows; i++) {
-        for (size_t j = 0; j < A.ncols; j++) {
+    for (size_t i = 0; i < A.nrows; i++) 
+    {
+        for (size_t j = 0; j < A.ncols; j++) 
+        {
             assert(GET_ELEMENT(A, i, j) >= -10 && GET_ELEMENT(A, i, j) < 20 && "RANDOM_MATRIX failed: values out of expected range");
         }
     }
@@ -47,8 +49,10 @@ void TEST_RANDOM_MATRIX()
 void TEST_PRINT_MATRIX() 
 {
     Matrix A = FILL(2, 2, 3);  // Create a 2x2 Matrix with value 3
-    for (size_t i = 0; i < A.nrows; i++) {
-        for (size_t j = 0; j < A.ncols; j++) {
+    for (size_t i = 0; i < A.nrows; i++) 
+    {
+        for (size_t j = 0; j < A.ncols; j++) 
+        {
             assert(GET_ELEMENT(A, i, j) == 3 && "RANDOM_MATRIX failed: values out of expected range");
         }
     }
