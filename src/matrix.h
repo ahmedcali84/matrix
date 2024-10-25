@@ -38,7 +38,6 @@ MATDEF bool TEST_MATRIX_EQUAL(Matrix A, Matrix B, char *matrix_a, char *matrix_b
 MATDEF Matrix FILL(size_t nrows, size_t ncols, float FILL_value);                                  // Creates A Matrix filled with a specific value (For Development Purposes)
 MATDEF Matrix EXPECTED_MATRIX(size_t nrows, size_t ncols, float value);                            // Returns the doubled-version of created Matrix (For Development Purposes)
 MATDEF float MSE(float pred, float Y);                                                             // Cost Function (CALCULATES MEAN SQUARE ERROR)
-MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha);  // Linear REGRESSION
 MATDEF void UNLOAD(Matrix *B);                                                                     // Function to free Allocated Memory
 
 // Special Macro Functions
@@ -375,119 +374,6 @@ MATDEF float MSE(float pred, float Y)
 {
     // Calculate mean square error
     return powf(pred - Y, 2); // Return the square of the difference
-}
-
-MATDEF void REGRESSION(int epochs, Matrix X, Matrix Ws, Matrix bias, Matrix actual, float alpha)
-{
-    // Calculate initial predictions by performing the dot product of weights and input features
-    Matrix *pred = DOT_PRODUCT(&X, &Ws);
-
-    // Print initial predictions Before Bias
-    printf("Initial Predictions Before Bias: ");
-    PRINT(*pred);
-
-    // Add bias to each prediction
-    for (size_t i = 0; i < pred->nrows; ++i) 
-    {
-        for (size_t j = 0; j < pred->ncols; ++j) 
-        {
-            size_t index = i * pred->ncols + j;
-            pred->A[index] += GET_ELEMENT(bias, 0, 0); // Add bias to each prediction
-        }
-    }
-    
-    // Print initial predictions After Bias
-    printf("Initial Predictions After Bias: ");
-    PRINT(*pred);
-
-    // Main loop for the number of epochs
-    for (int epoch = 0; epoch < epochs; ++epoch)
-    {
-        float total_cost = 0.0;
-        // Update weights for each feature
-        for (size_t i = 0; i < Ws.nrows; ++i)
-        {
-            for (size_t j = 0; j < Ws.ncols; ++j)
-            {
-                float w = GET_ELEMENT(Ws, i, j); // Retrieve the current weight
-                float b = GET_ELEMENT(bias, 0, j); // Retrieve the current bias
-
-                float gradient_w = 0.0f; // Initialize gradient for this weight
-                float gradient_b = 0.0f; // Initialize gradient for this bias
-
-                // Calculate gradients based on predictions and actual values
-                for (size_t k = 0; k < pred->nrows; ++k)
-                {
-                    for (size_t m = 0; m < pred->ncols; ++m)
-                    {
-                        size_t index_pred = k * pred->ncols + m;
-                        size_t index_actual = k * actual.ncols + m; // Adjust according to actual dimensions
-                        
-                        if (index_pred < pred->nrows * pred->ncols && index_actual < actual.nrows * actual.ncols) // Ensure indices are valid
-                        {
-                            // Calculate the error between actual and predicted values
-                            float error = actual.A[index_actual] - pred->A[index_pred];
-                            // Accumulate the gradient for the weight
-                            gradient_w += (-2 * error * GET_ELEMENT(X, k, j)); // X index based on row k
-                            gradient_b += (-2 * error); // bias doesnn't depend on X
-
-                            // Accumulate the total cost (Mean Squared Error)
-                            total_cost += error * error;
-                        }
-                    }
-                }
-                // Update the weight using gradient descent
-                w = w - alpha * gradient_w;
-                SET_ELEMENT(Ws, i, j, w); // Set the new weight
-
-                b = b - alpha * gradient_b;
-                SET_ELEMENT(bias, 0, j, b); // Set the new weight
-            }
-        }
-
-        // Recalculate predictions after updating weights
-        Matrix *new_pred = DOT_PRODUCT(&X, &Ws);
-        
-        // Add bias to the new predictions
-        for (size_t i = 0; i < new_pred->nrows; ++i) 
-        {
-            for (size_t j = 0; j < new_pred->ncols; ++j) 
-            {
-                size_t index = i * new_pred->ncols + j;
-                new_pred->A[index] += GET_ELEMENT(bias, 0, 0);
-            }
-        }
-        
-        // Unload the old predictions
-        UNLOAD(pred);
-        pred = new_pred; // Update predictions with the new values
-
-        // Compute average total cost
-        total_cost /= (pred->nrows * pred->ncols); 
-
-        // Print cost and predictions at each epoch
-        if (epoch % 10 == 0 || epoch == epochs - 1)
-        {
-            for (size_t i = 0; i < pred->nrows; ++i)
-            {
-                for (size_t j = 0; j < pred->ncols; ++j)
-                {
-                    size_t index = i * pred->ncols + j;
-                    if (index < pred->nrows * pred->ncols) // Ensure index is valid
-                    {
-                        // Calculate and print the Mean Squared Error (MSE), predicted value, and actual value
-                        printf("Epoch =  %d, Cost = %f, Pred: %f, Actual = %f\n", 
-                               epoch, total_cost, 
-                               pred->A[index], actual.A[index]);
-                    }
-                }
-            }
-        }
-    }
-    
-    // Print final predictions after training
-    // PRINT(*pred);
-    UNLOAD(pred); // Clean up memory for predictions
 }
 
 MATDEF void UNLOAD(Matrix *B)
