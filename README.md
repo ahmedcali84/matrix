@@ -23,14 +23,14 @@ This repository contains a collection of matrix operations implemented in C. The
 
 ## Usage
 
-The program performs various matrix operations. You can specify the maximum value for matrix elements using a command-line argument. Here is how you use the program:
+The program performs various matrix operations.
 
 1. **Compile the Program**:
     ```bash
     make
     ```
 
-2. **Run the Program with Command-Line Arguments**:
+2. **Run the Program to test the test_cases**:
     ```bash
     ./test_cases
     ```
