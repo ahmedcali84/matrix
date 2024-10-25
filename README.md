@@ -32,15 +32,8 @@ The program performs various matrix operations. You can specify the maximum valu
 
 2. **Run the Program with Command-Line Arguments**:
     ```bash
-    ./main <max-value>
+    ./test_cases
     ```
-   - `<max value>`: This argument specifies the maximum value that each matrix element can take. For example, if you run `./main 10`, the program will generate matrices with values ranging from 0 to 9.
-
-3. **Example Usage**:
-    ```bash
-    ./main 10 
-    ```
-   - **Expected Output**: The program will generate two random matrices and display the result of their addition.
 
 ## License
 
