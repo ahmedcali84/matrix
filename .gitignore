@@ -4,3 +4,4 @@ test_cases
 matrix.o
 *.o
 .vscode/LaTeX/
+.vscode/
