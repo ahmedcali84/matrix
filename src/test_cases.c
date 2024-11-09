@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <time.h>
 
-typedef struct 
+typedef struct
 {
     void (*test_function)(void); // Pointer to the test function
     const char *name;            // Name of the test case
@@ -19,7 +19,7 @@ void TEST_GET_ELEMENT() {
 }
 
 // TEST for SET_ELEMENT
-void TEST_SET_ELEMENT() 
+void TEST_SET_ELEMENT()
 {
     Matrix A = FILL(2, 3, 0);  // Fill a 2x3 Matrix with value 0
     SET_ELEMENT(A, 1, 2, 7);  // Set element (1, 2) to 7
@@ -29,29 +29,29 @@ void TEST_SET_ELEMENT()
 }
 
 // TEST for RANDOM_MATRIX
-void TEST_RANDOM_MATRIX() 
+void TEST_RANDOM_MATRIX()
 {
     Matrix A = RANDOM_MATRIX(2, 2);  // Create a 2x2 Matrix with Random elements [0, 10]
     assert(A.nrows == 2 && A.ncols == 2 && "RANDOM_MATRIX failed: unexpected dimensions");
 
-    for (size_t i = 0; i < A.nrows; i++) 
+    for (size_t i = 0; i < A.nrows; i++)
     {
-        for (size_t j = 0; j < A.ncols; j++) 
+        for (size_t j = 0; j < A.ncols; j++)
         {
             assert(GET_ELEMENT(A, i, j) >= -10 && GET_ELEMENT(A, i, j) < 20 && "RANDOM_MATRIX failed: values out of expected range");
         }
     }
-    
+
     UNLOAD(&A);
 }
 
 // TEST for PRINT_MATRIX
-void TEST_PRINT_MATRIX() 
+void TEST_PRINT_MATRIX()
 {
     Matrix A = FILL(2, 2, 3);  // Create a 2x2 Matrix with value 3
-    for (size_t i = 0; i < A.nrows; i++) 
+    for (size_t i = 0; i < A.nrows; i++)
     {
-        for (size_t j = 0; j < A.ncols; j++) 
+        for (size_t j = 0; j < A.ncols; j++)
         {
             assert(GET_ELEMENT(A, i, j) == 3 && "RANDOM_MATRIX failed: values out of expected range");
         }
@@ -61,7 +61,7 @@ void TEST_PRINT_MATRIX()
 }
 
 // TEST for SHAPE
-void TEST_SHAPE() 
+void TEST_SHAPE()
 {
     Matrix A = FILL(3, 4, 1);  // Create a 3x4 Matrix
     size_t result = SHAPE(A);  // Get shape
@@ -70,7 +70,7 @@ void TEST_SHAPE()
 }
 
 // TEST for MATRIX_ADD
-void TEST_MATRIX_ADD() 
+void TEST_MATRIX_ADD()
 {
     Matrix A = FILL(2, 2, 5);  // Create 2x2 Matrix with value 5
     Matrix B = FILL(2, 2, 3);  // Create 2x2 Matrix with value 3
@@ -81,7 +81,7 @@ void TEST_MATRIX_ADD()
 }
 
 // TEST for MATRIX_SUBTRACT
-void TEST_MATRIX_SUBTRACT() 
+void TEST_MATRIX_SUBTRACT()
 {
     Matrix A = FILL(2, 2, 7);  // Create 2x2 Matrix with value 7
     Matrix B = FILL(2, 2, 4);  // Create 2x2 Matrix with value 4
@@ -92,7 +92,7 @@ void TEST_MATRIX_SUBTRACT()
 }
 
 // TEST for HADAMARD_PRODUCT
-void TEST_HADAMARD_PRODUCT() 
+void TEST_HADAMARD_PRODUCT()
 {
     Matrix A = FILL(2, 2, 2);  // Create 2x2 Matrix with value 2
     Matrix B = FILL(2, 2, 3);  // Create 2x2 Matrix with value 3
@@ -103,7 +103,7 @@ void TEST_HADAMARD_PRODUCT()
 }
 
 // TEST for DOT_PRODUCT
-void TEST_DOT_PRODUCT() 
+void TEST_DOT_PRODUCT()
 {
     Matrix A = FILL(2, 3, 1);  // 2x3 Matrix
     Matrix B = FILL(3, 2, 2);  // 3x2 Matrix
@@ -115,7 +115,7 @@ void TEST_DOT_PRODUCT()
 }
 
 // TEST for TRANSPOSE
-void TEST_TRANSPOSE() 
+void TEST_TRANSPOSE()
 {
     Matrix A = FILL(2, 3, 1);  // 2x3 Matrix
     Matrix C = TRANSPOSE(&A);  // Should be 3x2 Matrix
@@ -125,7 +125,7 @@ void TEST_TRANSPOSE()
 }
 
 // TEST for TEST_MATRIX
-void TEST_TEST_MATRIX() 
+void TEST_TEST_MATRIX()
 {
     Matrix A = FILL(2, 2, 5);  // 2x2 Matrix with value 5
     Matrix B = FILL(2, 2, 5);  // 2x2 Matrix with value 5
@@ -134,7 +134,7 @@ void TEST_TEST_MATRIX()
 }
 
 // TEST for MSE
-void TEST_MSE() 
+void TEST_MSE()
 {
     float pred = 2.5;
     float Y = 2.0;
@@ -142,16 +142,16 @@ void TEST_MSE()
 }
 
 // TEST for UNLOAD
-void TEST_UNLOAD() 
+void TEST_UNLOAD()
 {
     Matrix A = FILL(2, 2, 5);  // Create a 2x2 Matrix
     UNLOAD(&A);  // Free memory
     assert(A.A == NULL && "UNLOAD failed: memory not freed");
 }
 
-void run_tests(Test_Case test_cases[], size_t num_tests) 
+void run_tests(Test_Case test_cases[], size_t num_tests)
 {
-    for (size_t i = 0; i < num_tests; i++) 
+    for (size_t i = 0; i < num_tests; i++)
     {
         Test_Case test = test_cases[i];
         test.test_function();  // Run the test
@@ -159,7 +159,7 @@ void run_tests(Test_Case test_cases[], size_t num_tests)
     }
 }
 
-int main() 
+int main()
 {
     srand(time(NULL));
     Test_Case tests[] = {
@@ -179,6 +179,7 @@ int main()
     };
 
     size_t num_tests = sizeof(tests) / sizeof(tests[0]);
-    run_tests(tests, num_tests);  // Run all tests
+    run_tests(tests,
+    num_tests);  // Run all tests
     return 0;
 }

@@ -58,7 +58,7 @@ MATDEF float GET_ELEMENT(Matrix C, size_t row, size_t col)
                 row, col, C.nrows, C.ncols);
         exit(EXIT_FAILURE); // Handle the error, exit or return an error value
     }
-    
+
     // Retrieve an element from the matrix at the specified row and column
     return C.A[row * C.ncols + col];
 }
@@ -231,7 +231,7 @@ MATDEF Matrix HADAMARD_PRODUCT(Matrix *A, Matrix *B)
 MATDEF Matrix* DOT_PRODUCT(Matrix *A, Matrix *B)
 {
     // Check if the matrices can be multiplied
-    if (A->ncols != B->nrows) 
+    if (A->ncols != B->nrows)
     {
         fprintf(stderr, "Cannot Multiply A->ncols( %zu ) != B->nrows( %zu ).\n", A->ncols, B->nrows);
         exit(EXIT_FAILURE);
