@@ -1,7 +1,7 @@
 # Matrix Operations
 
 <p align="center">
-    <a href="https://github.com/ahmedcali84/matrix/tree/main/src">
+    <a href="https://github.com/ahmedcali84/matrix/tree/main/lib">
         <img src="background.png">
     </a>
 </p>
@@ -32,7 +32,7 @@ The program performs various matrix operations.
 
 2. **Run the Program to test the test_cases**:
     ```bash
-    ./test_cases
+    ./gen
     ```
 
 ## License

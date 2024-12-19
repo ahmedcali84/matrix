@@ -23,5 +23,5 @@ jobs:
       run: make
 
     - name: Run tests
-      working-directory: src
-      run: valgrind ./test_cases
+      working-directory: test
+      run: valgrind ./gen
