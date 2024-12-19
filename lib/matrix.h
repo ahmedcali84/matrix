@@ -23,8 +23,7 @@ typedef enum {
 } Element_Type;
 
 // Matrix Structure and Information
-typedef struct Matrix
-{
+typedef struct {
     void *A;             // Pointer to the array of matrix elements
     size_t nrows;        // Number of rows in the matrix
     size_t ncols;        // Number of columns in the matrix
