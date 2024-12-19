@@ -19,7 +19,6 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y build-essential valgrind
 
     - name: Compile the program
-      working-directory: src
       run: make
 
     - name: Run tests
