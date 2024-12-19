@@ -40,7 +40,7 @@ MATDEF void GET_ELEMENT(Matrix C, size_t row, size_t col, void *target);        
 MATDEF void SET_ELEMENT(Matrix C, size_t row, size_t col, void *value);                                    // Set a specific element from the matrix to a new value
 MATDEF Matrix CREATE_MATRIX(size_t rows, size_t cols, size_t element_size, Element_Type type);             // Creates an empty Matrix With specified parameters
 MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols, size_t element_size, Element_Type type);           // Generates random Matrix(nrows x ncols)
-MATDEF void PRINT_MATRIX(Matrix B, const char *name);                                                      // Prints a Matrix
+MATDEF void PRINT_MATRIX(const Matrix B, const char *name);                                                      // Prints a Matrix
 MATDEF int MATRIX_SHAPE(Matrix A, const char *name);                                                      // Prints the SHAPE of the matrix
 MATDEF Matrix MATRIX_ADD(Matrix *A, Matrix *B);                                                            // Adds two Matrices
 MATDEF Matrix MATRIX_SUBTRACT(Matrix *A, Matrix *B);                                                       // Subtracts two Matrices
@@ -166,7 +166,7 @@ MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols, size_t element_size, Ele
     return random; // Return the generated matrix
 }
 
-MATDEF void PRINT_MATRIX(Matrix B, const char *name) {
+MATDEF void PRINT_MATRIX(const Matrix B, const char *name) {
     // Print the matrix with its name
     printf("%s = [\n", name);
     switch (B.type) {
