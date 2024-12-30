@@ -54,7 +54,6 @@ MATDEF void UNLOAD(Matrix *B);                                                  
 #define PRINT(B) PRINT_MATRIX(B, #B)                                                                       // Macro definition of a special print function
 #define SHAPE(A) MATRIX_SHAPE(A, #A)                                                                       // Macro definition of a special SHAPE printing function
 #define TEST_MATRIX(A, B) TEST_MATRIX_EQUAL(A, B, #A, #B)                                                  // Special Macro Version of Test Matrix Function also prints the variable-name of the Matrix
-#define READ_FILE_FAILED "Failed To Read File %s\n"
 #define ALLOCATION_FAILED "Memory Allocation Failed.\n"
 
 
@@ -105,7 +104,7 @@ MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols, size_t element_size, Ele
         case TYPE_INT:
             for (size_t i = 0; i < random.nrows; ++i) {
                 for (size_t j = 0; j < random.ncols; ++j) {
-                    int v = rand() / RAND_MAX * 20 - 10;
+                    int v = (rand() % 21) - 10;
                     SET_ELEMENT(random, i , j , &v);
                 }
             }
@@ -114,7 +113,7 @@ MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols, size_t element_size, Ele
         case TYPE_BOOL:
             for (size_t i = 0; i < random.nrows; ++i) {
                 for (size_t j = 0; j < random.ncols; ++j) {
-                    bool v = rand() / 2;
+                    bool v = rand() % 2;
                     SET_ELEMENT(random, i , j , &v);
                 }
             }
@@ -123,7 +122,7 @@ MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols, size_t element_size, Ele
         case TYPE_DOUBLE:
             for (size_t i = 0; i < random.nrows; ++i) {
                 for (size_t j = 0; j < random.ncols; ++j) {
-                    double v = rand() / RAND_MAX * 20.0f - 10.0f;
+                    double v = ((double)rand() / RAND_MAX) * 20.0 - 10.0;
                     SET_ELEMENT(random, i , j , &v);
                 }
             }
@@ -132,7 +131,7 @@ MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols, size_t element_size, Ele
         case TYPE_SIZE_T:
             for (size_t i = 0; i < random.nrows; ++i) {
                 for (size_t j = 0; j < random.ncols; ++j) {
-                    size_t v = rand() / RAND_MAX * 20 - 10;
+                    size_t v = rand() % 21;
                     SET_ELEMENT(random, i , j , &v);
                 }
             }
@@ -150,7 +149,7 @@ MATDEF Matrix RANDOM_MATRIX(size_t nrows, size_t ncols, size_t element_size, Ele
         case TYPE_FLOAT:
             for (size_t i = 0; i < random.nrows; ++i) {
                 for (size_t j = 0; j < random.ncols; ++j) {
-                    float v = rand() / RAND_MAX * 20.0f - 10.0f;
+                    float v = ((float) rand() / RAND_MAX) * 20.0f - 10.0f;
                     SET_ELEMENT(random, i , j , &v);
                 }
             }
@@ -185,7 +184,7 @@ MATDEF void PRINT_MATRIX(const Matrix B, const char *name) {
                 for (size_t j = 0; j < B.ncols; ++j) {
                     bool v;;
                     GET_ELEMENT(B, i , j , &v);
-                    printf(" %s ", v ? "true": "false");
+                    printf(" %s ", v ? "true ": "false");
                 }
                 printf("\n");
             }
@@ -196,7 +195,7 @@ MATDEF void PRINT_MATRIX(const Matrix B, const char *name) {
                 for (size_t j = 0; j < B.ncols; ++j) {
                     double v;
                     GET_ELEMENT(B, i , j , &v);
-                    printf(" %f ", v);
+                    printf(" %.2f ", v);
                 }
                 printf("\n");
             }
@@ -229,7 +228,7 @@ MATDEF void PRINT_MATRIX(const Matrix B, const char *name) {
                 for (size_t j = 0; j < B.ncols; ++j) {
                     float v;
                     GET_ELEMENT(B, i , j , &v);
-                    printf(" %f ", v);
+                    printf(" %.2f ", v);
                 }
                 printf("\n");
             }
