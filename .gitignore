@@ -11,3 +11,4 @@ matrix.c
 build/
 obj/
 Test/
+Makefile
