@@ -1,43 +1,23 @@
 # Compiler
-CC = cc
+CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -std=c99 -O2 -Wno-unused-function -Ilib
+CFLAGS = -Wall -Wextra -std=c99 -O2 -Wno-unused-function -I./release/include/
 
-# Target executable
-TARGET = gen
+# Libs
+LIB=-Wl,-rpath,./release/lib -L./release/lib
 
-# Source files
-SRCS = test/test_cases.c
+# source files
+SRC=test/test_cases.c
 
-# Object files
-OBJS = $(SRCS:.c=.o)
+# EXECUTABLE
+OBJ=gen
 
-# Header files
-HEADERS = lib/matrix.h
+# LFLAGS
+LFLAGS=-l:libmatrix.so
 
-# Default target
-all: $(TARGET)
+all:
+	$(CC) $(CFLAGS) $(LIB) $(SRC) -o $(OBJ) $(LFLAGS)
 
-# Rule to create the executable
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) -lm
-
-# Rule to compile .c files to .o files
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# Clean up build files
 clean:
-	rm -f $(OBJS) $(TARGET)
-
-# Run the program
-run: $(TARGET)
-	./$(TARGET)
-
-# Debug build
-debug: CFLAGS += -g -O0
-debug: clean all
-
-# PHONY targets
-.PHONY: all clean run debug
+	$(RM) -r *.dSYM *.o $(OBJ) $(OBJ1)
