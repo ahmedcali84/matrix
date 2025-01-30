@@ -1,14 +1,30 @@
+# Ignore LaTeX log and aux files
 *.log
 *.aux
+
+# ignore executables of the test case
 test_cases
-matrix.o
+gen
+
+#ignore Object files
 *.o
+
+#ignore vscode folder
 .vscode/LaTeX/
 .vscode/
-gen
+
+# ignore Folder Specified
 LaTeX
-matrix.c
 build/
 obj/
 Test/
+
+# Ignore Matrix file
+matrix.c
+
+# zip and tar files
+*.zip
+*.tar.gz
+
+# Makefile
 Makefile
