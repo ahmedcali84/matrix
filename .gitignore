@@ -10,3 +10,4 @@ LaTeX
 matrix.c
 build/
 obj/
+test/

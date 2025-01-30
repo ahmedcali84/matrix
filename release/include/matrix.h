@@ -5,7 +5,7 @@
  * A collection of basic and essential matrix operations for Unix systems.
  *
  * @author Ahmed Ali Mohammed <ahmedcali1984@gmail.com>
- * @version 1.0.0
+ * @version 0.1.0
  * @date January 30, 2025
  */
 

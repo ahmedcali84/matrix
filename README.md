@@ -1,8 +1,8 @@
 # Matrix Operations
 
 <p align="center">
-    <a href="https://github.com/ahmedcali84/matrix/tree/main/lib">
-        <img src="background.png">
+    <a href="https://github.com/ahmedcali84/matrix">
+        <img src="resources/background.png">
     </a>
 </p>
 
