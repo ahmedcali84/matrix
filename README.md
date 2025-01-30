@@ -22,27 +22,13 @@ This repository contains a collection of matrix operations implemented in C. The
   - [Contribution](#contribution)
 
 ## Usage
-
-The program performs various matrix operations.
-
-1. **Compile the Program**:
-    ```bash
-    make
-    ```
-
-2. **Run the Program to test the test_cases**:
-    ```bash
-    ./gen
-    ```
+**Download the Release**
 
 ## License
-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-
 If you have any questions or feedback, feel free to contact me at [ahmedcali1984@gmail.com](mailto:ahmedcali1984@gmail.com) or via [LinkedIn](https://www.linkedin.com/in/ahmed-ali-99055728b/).
 
 ## Contribution
-
 Contributions are welcome! Please feel free to submit a pull request or open an issue if you have suggestions or improvements.
