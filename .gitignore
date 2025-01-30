@@ -7,3 +7,6 @@ matrix.o
 .vscode/
 gen
 LaTeX
+matrix.c
+build/
+obj/
