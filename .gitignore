@@ -19,9 +19,6 @@ build/
 obj/
 Test/
 
-# Ignore Matrix file
-matrix.c
-
 # zip and tar files
 *.zip
 *.tar.gz
