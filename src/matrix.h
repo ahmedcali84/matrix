@@ -28,33 +28,21 @@ extern "C" {
 
 #define MATDEF extern
 
-typedef enum ElementType {
-    TYPE_INT,
-    TYPE_DOUBLE,
-} Element_Type;
-
-typedef union MatrixData {
-    int    *int_array;
-    double *double_array;
-} Matrix_Data;
-
 // Matrix Structure and Information
 typedef struct Matrix {
-    void *A;             // Pointer to the array of matrix elements
+    double *A;             // Pointer to the array of matrix elements
     size_t nrows;        // Number of rows in the matrix
     size_t ncols;        // Number of columns in the matrix
-    size_t element_size; // Element Size
-    Element_Type type;   // Element Type
 } Matrix;
 
 /*
 ************** MATRIX OPERATIONS FUNCTIONS DECLARATIONS *******************
 */
 
-MATDEF void get_element(Matrix c, size_t row, size_t col, void *target);                                   // get specific element from the Matrix
-MATDEF void set_element(Matrix c, size_t row, size_t col, void *value);                                    // set a specific element from the Matrix to a new value
-MATDEF Matrix create_matrix(size_t rows, size_t cols, size_t element_size, Element_Type type);             // creates an empty Matrix with specified parameters
-MATDEF Matrix random_matrix(size_t nrows, size_t ncols, size_t element_size, Element_Type type);           // generates random Matrix(nrows x ncols)
+MATDEF double get_element(Matrix C, size_t row, size_t col);                                   // get specific element from the Matrix
+MATDEF void set_element(Matrix C, size_t row, size_t col, double value);                                    // set a specific element from the Matrix to a new value
+MATDEF Matrix create_matrix(size_t rows, size_t cols);             // creates an empty Matrix with specified parameters
+MATDEF Matrix random_matrix(size_t nrows, size_t ncols);           // generates random Matrix(nrows x ncols)
 MATDEF void print_matrix(const Matrix b, const char *name);                                                // prints a Matrix
 MATDEF int matrix_shape(Matrix a, const char *name);                                                       // prints the shape of the Matrix
 MATDEF Matrix matrix_add(Matrix *a, Matrix *b);                                                            // adds two matrices
@@ -63,7 +51,7 @@ MATDEF Matrix hadamard_product(Matrix *a, Matrix *b);                           
 MATDEF Matrix dot_product(Matrix *a, Matrix *b);                                                           // computes the dot-product of two matrices
 MATDEF Matrix transpose(Matrix *a);                                                                        // return transpose of Matrix a
 MATDEF bool test_matrix_equal(Matrix a, Matrix b, char *Matrix_a, char *Matrix_b);                         // test matrices for equality
-MATDEF Matrix fill(size_t nrows, size_t ncols, size_t element_size, Element_Type type, void *fill_value);  // creates a Matrix filled with a specific value (for development purposes)
+MATDEF Matrix fill(size_t nrows, size_t ncols, double fill_value);  // creates a Matrix filled with a specific value (for development purposes)
 MATDEF void unload(Matrix *b);                                                                             // Function to free Allocated Memory
 
 // Special Macro Functions
