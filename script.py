@@ -4,6 +4,8 @@
 import sys
 import os
 
+# TODO: build lib
+
 BUILD_DIR  = "build/" # Build Directory
 SOURCE_DIR = "src/"   # Contains Source Files
 TEST_DIR   = "test/"  # Contains TEST Source Files
@@ -29,7 +31,7 @@ def usage(subcommand: str , options: list) -> None:
     print(f"Usage: {subcommand} [OPTION]")
 
     print("[OPTIONS]: ")
-    print(f" {options[0]} - Compile the {c_source_files(source_dict)} to {OUTPUT}. (MANDATORY)")
+    print(f" {options[0]} - Compile the {c_source_files(source_dict_doubles)} to {OUTPUT}. (MANDATORY)")
     print(f" {options[1]} - Remove the executable: {OUTPUT}.  (MANDATORY)")
     print(f" {options[2]} - print this usage.")
     print(f" {options[3]} - Run the Built programs '{OUTPUT}'.")
@@ -45,6 +47,7 @@ def compile(command: str) -> None:
         if exit_code != 0:
             raise RuntimeError(f"Compilation Failed with exit_code: {exit_code}")
 
+        print("Successfully Compiled.")
     except RuntimeError as e:
         print(f"{e}") # print error
         sys.exit(1) # exit with failure
