@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include <stdlib.h>
 
 /*
 ************** matrix operations functions implementations *******************
@@ -47,7 +48,7 @@ MATDEF Matrix random_matrix(size_t nrows, size_t ncols, size_t element_size, Ele
         case TYPE_INT:
             for (size_t i = 0; i < random.nrows; ++i) {
                 for (size_t j = 0; j < random.ncols; ++j) {
-                    int v = (rand() % 21) - 10;
+                    int v = (rand() / (RAND_MAX - (RAND_MAX / 2)));
                     set_element(random, i , j , &v);
                 }
             }
@@ -56,7 +57,7 @@ MATDEF Matrix random_matrix(size_t nrows, size_t ncols, size_t element_size, Ele
         case TYPE_DOUBLE:
             for (size_t i = 0; i < random.nrows; ++i) {
                 for (size_t j = 0; j < random.ncols; ++j) {
-                    double v = ((double)rand() / RAND_MAX) * 20.0 - 10.0;
+                    double v = ((double)rand() / RAND_MAX) * 1000 - 500;
                     set_element(random, i , j , &v);
                 }
             }
@@ -198,7 +199,7 @@ MATDEF Matrix matrix_subtract(Matrix *A, Matrix *B) {
             exit(EXIT_FAILURE);
     }
 
-    return c; // return the result
+    return C; // return the result
 }
 
 MATDEF Matrix hadamard_product(Matrix *A, Matrix *B) {
@@ -295,7 +296,7 @@ MATDEF Matrix dot_product(Matrix *A, Matrix *B) {
 
 MATDEF Matrix transpose(Matrix *A) {
     // initialize a new Matrix for the result
-    Matrix c = create_matrix(A->ncols, A->nrows, A->element_size, A->type);
+    Matrix C = create_matrix(A->ncols, A->nrows, A->element_size, A->type);
 
     // calculate the transpose
     switch (A->type) {
@@ -304,7 +305,7 @@ MATDEF Matrix transpose(Matrix *A) {
                 for (size_t j = 0; j < A->ncols; ++j) {
                     int a;
                     get_element(*A, i , j , &a);
-                    set_element(c, j , i , &a);
+                    set_element(C, j , i , &a);
                 }
             }
             break;
@@ -314,7 +315,7 @@ MATDEF Matrix transpose(Matrix *A) {
                 for (size_t j = 0; j < A->ncols; ++j) {
                     double a;
                     get_element(*A, i , j , &a);
-                    set_element(c, j , i , &a);
+                    set_element(C, j , i , &a);
                 }
             }
             break;
@@ -324,7 +325,7 @@ MATDEF Matrix transpose(Matrix *A) {
             exit(EXIT_FAILURE);
     }
 
-    return c; // return the transposed Matrix
+    return C; // return the transposed Matrix
 }
 
 MATDEF bool test_matrix_equal(Matrix A, Matrix B, char *Matrix_a, char *Matrix_b) {
