@@ -19,8 +19,9 @@ void run_tests(Test_Case test_cases[], unsigned int num_tests)
 
 void TEST_RANDOM_MATRIX()
 {
-    Matrix A = random_matrix(4, 4, sizeof(double), TYPE_DOUBLE);
-    assert((A.A != NULL || A.type == TYPE_DOUBLE) && "ERROR: Test Failed.\n");
+    Matrix A = random_matrix(4, 4);
+    assert(A.A != NULL && "ERROR: Test Failed.\n");
+    PRINT(A);
     unload(&A);
 }
 
