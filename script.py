@@ -9,17 +9,11 @@ SOURCE_DIR = "src/"   # Contains Source Files
 TEST_DIR   = "test/"  # Contains TEST Source Files
 
 CC       = "gcc" # Compiles 
-OUTPUT1  = f"{BUILD_DIR}run1" # Path to executable
-OUTPUT2  = f"{BUILD_DIR}run2"
+OUTPUT   = f"{BUILD_DIR}run" # Path to executable
 CFLAGS   = f"-Wall -Werror -Wextra -std=c17 -ggdb -o" # C flags
 LDFLAGS  = "-lm" # linker flags
 
 # Dictionary Containing Paths to C source files
-source_dict_ints = [
-    {"TEST"   : f"{TEST_DIR}test_ints.c"},
-    {"SOURCE" : f"{SOURCE_DIR}matrix.c"}
-]
-
 source_dict_doubles = [
     {"TEST"   : f"{TEST_DIR}test_doubles.c"},
     {"SOURCE" : f"{SOURCE_DIR}matrix.c"}
@@ -38,7 +32,7 @@ def usage(subcommand: str , options: list) -> None:
     print(f" {options[0]} - Compile the {c_source_files(source_dict)} to {OUTPUT}. (MANDATORY)")
     print(f" {options[1]} - Remove the executable: {OUTPUT}.  (MANDATORY)")
     print(f" {options[2]} - print this usage.")
-    print(f" {options[3]} - Run the Built programs '{OUTPUT1}' '{OUTPUT2}'.")
+    print(f" {options[3]} - Run the Built programs '{OUTPUT}'.")
 
 
 # Function that compiles a given Command
@@ -61,12 +55,10 @@ def compile(command: str) -> None:
         sys.exit(1)
 
 # source files
-sources_ints    = c_source_files(source_dict_ints)
 sources_doubles = c_source_files(source_dict_doubles)
 
 # Command to be executed
-command_doubles = f"{CC} {CFLAGS} {OUTPUT1} {sources_doubles} {LDFLAGS}"
-command_ints    = f"{CC} {CFLAGS} {OUTPUT2} {sources_ints} {LDFLAGS}"
+command_doubles = f"{CC} {CFLAGS} {OUTPUT} {sources_doubles} {LDFLAGS}"
 
 # List of options to be included in the cli when running this script
 OPTIONS = ["-build", "-clean", "-help", "-run"]
@@ -85,7 +77,6 @@ if __name__ == "__main__":
 
             # comile the program
             compile(command_doubles)
-            compile(command_ints)
 
         except FileExistsError:
             # Directory Already Exists
@@ -93,17 +84,15 @@ if __name__ == "__main__":
 
             # Compile the program
             compile(command_doubles)
-            compile(command_ints)
 
     # if 'clean' , remove build file
     elif argv[0] == OPTIONS[1]:
         try:
-            os.remove(f"{OUTPUT1}") # remove the executable if option is 'clean'
-            os.remove(f"{OUTPUT2}") # remove the executable if option is 'clean'
-            print(f"Successfully Removed '{OUTPUT1}', '{OUTPUT2}' file.") # print removed files
+            os.remove(f"{OUTPUT}") # remove the executable if option is 'clean'
+            print(f"Successfully Removed '{OUTPUT}' file.") # print removed files
             sys.exit(0) # exit success
         except OSError as e:
-            print(f"File: '{OUTPUT1}', '{OUTPUT2}' Removal Failed. ERROR: {e}.") # exit on os error
+            print(f"File: '{OUTPUT}' Removal Failed. ERROR: {e}.") # exit on os error
             sys.exit(1) # Removal Failed , exit failure
 
     # if 'help' , print Usage
@@ -113,8 +102,7 @@ if __name__ == "__main__":
 
     elif argv[0] == OPTIONS[3]:
         try:
-            os.system(f"{OUTPUT1}")
-            os.system(f"{OUTPUT2}")
+            os.system(f"{OUTPUT}")
         except Exception as e:
             print(f"ERROR: {e}")
             exit(1)
