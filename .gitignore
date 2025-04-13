@@ -2,26 +2,14 @@
 *.log
 *.aux
 
-# ignore executables of the test case
-test_cases
-gen
-
 #ignore Object files
 *.o
-
-#ignore vscode folder
-.vscode/LaTeX/
-.vscode/
 
 # ignore Folder Specified
 LaTeX
 build/
-obj/
-Test/
 
 # zip and tar files
 *.zip
 *.tar.gz
 
-# Makefile
-Makefile
