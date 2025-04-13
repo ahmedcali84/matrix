@@ -64,10 +64,10 @@ MATDEF void print_matrix(const Matrix b, const char *name) {
     printf("\n\n");
 }
 
-MATDEF int matrix_shape(Matrix a, const char *name) {
-    // print the shape of the Matrix (rows, columns) and its type
-    printf("%s(shape: (%zu , %zu), dtype=double)\n", name, a.nrows, a.ncols);
-    return 0;
+MATDEF Shape matrix_shape(Matrix A) {
+    // shape of the Matrix (rows, columns)
+    Shape shape = {.rows = A.nrows, .cols = A.ncols};
+    return shape;
 }
 
 MATDEF Matrix matrix_add(Matrix *A, Matrix *B) {
@@ -169,7 +169,7 @@ MATDEF Matrix transpose(Matrix *A) {
     return C; // return the transposed Matrix
 }
 
-MATDEF bool test_matrix_equal(Matrix A, Matrix B, char *Matrix_a, char *Matrix_b) {
+MATDEF bool test_matrix_equal(Matrix A, Matrix B) {
     // check if the dimensions match
     assert(((A.ncols == B.ncols) || (A.nrows == B.nrows))&& "not equal: different dimensions.");
 
@@ -180,13 +180,11 @@ MATDEF bool test_matrix_equal(Matrix A, Matrix B, char *Matrix_a, char *Matrix_b
             a = get_element(A, i, j);
             b = get_element(B, i, j); 
             if (a != b) {
-                printf("%s and %s are not equal: values differ at (%zu, %zu)\n", Matrix_a, Matrix_b, i, j); // print mismatch
                 return false; // not equal
             }
         }
     }
 
-    printf("%s and %s are equal\n", Matrix_a, Matrix_b); // print equal matrices
     return true; // equal
 }
 
