@@ -45,7 +45,7 @@ MATDEF Matrix random_matrix(size_t nrows, size_t ncols) {
             set_element(random, i , j , v);
         }
     }
-    // return the random Matrix
+
     return random; // return the generated Matrix
 }
 
@@ -85,6 +85,7 @@ MATDEF Matrix matrix_add(Matrix *A, Matrix *B) {
             set_element(C, i , j , c);
         }
     }
+
     return C; // return the result Matrix
 }
 
@@ -94,7 +95,6 @@ MATDEF Matrix matrix_subtract(Matrix *A, Matrix *B) {
 
     // initialize a new Matrix for the result
     Matrix C = create_matrix(A->nrows, A->ncols);
-
 
     for (size_t i = 0; i < A->nrows; ++i) {
         for (size_t j = 0; j < A->ncols; ++j) {
@@ -126,6 +126,7 @@ MATDEF Matrix hadamard_product(Matrix *A, Matrix *B) {
             set_element(C, i , j , c);
         }
     }
+
     return C; // return the result Matrix
 }
 
@@ -149,6 +150,7 @@ MATDEF Matrix dot_product(Matrix *A, Matrix *B) {
             set_element(C , i , j , c);
         }
     }
+
     return C; // return the result Matrix
 }
 
@@ -209,6 +211,7 @@ MATDEF void unload(Matrix *B) {
         free(B->A); // free the array of elements
         B->A = NULL; // avoid dangling pointer
     }
+
     B->nrows = 0; // reset rows
     B->ncols = 0; // reset columns
 }
