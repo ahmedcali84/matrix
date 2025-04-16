@@ -27,7 +27,7 @@ extern "C" {
 
 // Matrix Structure and Information
 typedef struct _matrix {
-    double *A;    // Pointer to the array of matrix elements
+    float *A;     // Pointer to the array of matrix elements
     size_t nrows; // Number of rows in the matrix
     size_t ncols; // Number of columns in the matrix
 } Matrix;
@@ -42,24 +42,24 @@ typedef struct _shape {
 */
 
 // Core Functions
-double get_element(Matrix C, size_t row, size_t col);                        // get specific element from the Matrix
-void set_element(Matrix C, size_t row, size_t col, double new_value);        // set a specific element from the Matrix to a new value
-Matrix create_matrix(size_t rows, size_t cols);                              // creates an empty Matrix with specified parameters
-void unload(Matrix *b);                                                      // Function to free Allocated Memory
+float get_element(Matrix C, size_t row, size_t col);                      // get specific element from the Matrix
+void set_element(Matrix C, size_t row, size_t col, float new_value);      // set a specific element from the Matrix to a new value
+Matrix create_matrix(size_t rows, size_t cols);                           // creates an empty Matrix with specified parameters
+void unload(Matrix *b);                                                   // Function to free Allocated Memory
 
 // Utility Functions
-Matrix random_matrix(size_t nrows, size_t ncols);                            // generates random Matrix(nrows x ncols)
-void print_matrix(const Matrix b, const char *name);                         // prints a Matrix
-Shape matrix_shape(Matrix A);                                                // returns shape of the Matrix
-Matrix fill(size_t nrows, size_t ncols, double fill_value);                  // creates a Matrix filled with a specific value
+Matrix random_matrix(size_t nrows, size_t ncols);                         // generates random Matrix(nrows x ncols)
+void print_matrix(const Matrix b, const char *name);                      // prints a Matrix
+Shape matrix_shape(Matrix A);                                             // returns shape of the Matrix
+Matrix fill(size_t nrows, size_t ncols, float fill_value);                // creates a Matrix filled with a specific value
 
 // Operation Functions
-Matrix matrix_add(Matrix *a, Matrix *b);                                     // adds two matrices
-Matrix matrix_subtract(Matrix *a, Matrix *b);                                // subtracts two matrices
-Matrix hadamard_product(Matrix *a, Matrix *b);                               // computes element-wise product of two matrices
-Matrix dot_product(Matrix *a, Matrix *b);                                    // computes the dot-product of two matrices
-Matrix transpose(Matrix *a);                                                 // return transpose of Matrix a
-bool test_matrix_equal(Matrix a, Matrix b);                                  // test matrices for equality
+Matrix matrix_add(Matrix *a, Matrix *b);                                  // adds two matrices
+Matrix matrix_subtract(Matrix *a, Matrix *b);                             // subtracts two matrices
+Matrix hadamard_product(Matrix *a, Matrix *b);                            // computes element-wise product of two matrices
+Matrix dot_product(Matrix *a, Matrix *b);                                 // computes the dot-product of two matrices
+Matrix transpose(Matrix *a);                                              // return transpose of Matrix a
+bool test_matrix_equal(Matrix a, Matrix b);                               // test matrices for equality
 
 
 // Special Macro Functions
@@ -83,7 +83,7 @@ bool test_matrix_equal(Matrix a, Matrix b);                                  // 
 ************** MATRIX OPERATIONS FUNCTIONS IMPLEMENTATIONS *******************
 */
 
-double get_element(Matrix C, size_t row, size_t col) {
+float get_element(Matrix C, size_t row, size_t col) {
     // check for valid indices
     if (row >= C.nrows || col >= C.ncols) {
         fprintf(stderr, "index out of bounds: [%zu, %zu] for Matrix size [%zu, %zu]\n",
@@ -94,7 +94,7 @@ double get_element(Matrix C, size_t row, size_t col) {
     return C.A[row * C.ncols + col];
 }
 
-void set_element(Matrix C, size_t row, size_t col, double new_value) {
+void set_element(Matrix C, size_t row, size_t col, float new_value) {
     // set the element at the specified row and column to a new value
     C.A[row * C.ncols + col] = new_value;
 }
@@ -103,7 +103,7 @@ Matrix create_matrix(size_t rows, size_t cols) {
     Matrix create;
     create.nrows = rows;
     create.ncols = cols;
-    create.A = calloc(sizeof(double), (rows * cols));
+    create.A = calloc(sizeof(float), (rows * cols));
     if (create.A == NULL) {
         fprintf(stderr, ALLOCATION_FAILED);
         exit(EXIT_FAILURE);
@@ -119,7 +119,7 @@ Matrix random_matrix(size_t nrows, size_t ncols) {
     // fill the Matrix with random values
     for (size_t i = 0; i < random.nrows; ++i) {
         for (size_t j = 0; j < random.ncols; ++j) {
-            double v = ((double)rand() / RAND_MAX) * 1000 - 500;
+            float v = ((float)rand() / RAND_MAX) * 1000 - 500;
             set_element(random, i , j , v);
         }
     }
@@ -133,7 +133,7 @@ void print_matrix(const Matrix b, const char *name) {
 
     for (size_t i = 0; i < b.nrows; ++i) {
         for (size_t j = 0; j < b.ncols; ++j) {
-            double value = get_element(b, i , j);
+            float value = get_element(b, i , j);
             printf(" %.2f ", value);
         }
         printf("\n");
@@ -157,9 +157,9 @@ Matrix matrix_add(Matrix *A, Matrix *B) {
     
     for (size_t i = 0; i < A->nrows; ++i) {
         for (size_t j = 0; j < A->ncols; ++j) {
-            double a = get_element(*A, i , j);
-            double b = get_element(*B, i , j);
-            double c = a + b;
+            float a = get_element(*A, i , j);
+            float b = get_element(*B, i , j);
+            float c = a + b;
             set_element(C, i , j , c);
         }
     }
@@ -176,9 +176,9 @@ Matrix matrix_subtract(Matrix *A, Matrix *B) {
 
     for (size_t i = 0; i < A->nrows; ++i) {
         for (size_t j = 0; j < A->ncols; ++j) {
-            double a = get_element(*A, i , j);
-            double b = get_element(*B, i , j);
-            double c = a - b;
+            float a = get_element(*A, i , j);
+            float b = get_element(*B, i , j);
+            float c = a - b;
             set_element(C, i , j , c);
         }
     }
@@ -197,7 +197,7 @@ Matrix hadamard_product(Matrix *A, Matrix *B) {
     // calculate element-wise product
     for (size_t i = 0; i < A->nrows; ++i) {
         for (size_t j = 0; j < A->ncols; ++j) {
-            double a , b , c;
+            float a , b , c;
             a = get_element(*A, i , j);
             b = get_element(*B, i , j);
             c = a * b;
@@ -218,9 +218,9 @@ Matrix dot_product(Matrix *A, Matrix *B) {
     // calculate the dot product
     for (size_t i = 0; i < C.nrows; ++i) {
         for (size_t j = 0; j < C.ncols; ++j) {
-            double c = 0;
+            float c = 0;
             for (size_t k = 0; k < A->ncols; ++k) {
-                double a , b;
+                float a , b;
                 a = get_element(*A, i , k );
                 b = get_element(*B, k , j );
                 c += a * b;
@@ -238,7 +238,7 @@ Matrix transpose(Matrix *A) {
 
     for (size_t i = 0; i < A->nrows; ++i) {
         for (size_t j = 0; j < A->ncols; ++j) {
-            double a;
+            float a;
             a = get_element(*A, i , j);
             set_element(C, j , i , a);
         }
@@ -254,7 +254,7 @@ bool test_matrix_equal(Matrix A, Matrix B) {
     // check if all elements are equal
     for (size_t i = 0; i < A.nrows; ++i) {
         for (size_t j = 0; j < A.ncols; ++j) {
-            double a , b;
+            float a , b;
             a = get_element(A, i, j);
             b = get_element(B, i, j); 
             if (a != b) {
@@ -266,7 +266,7 @@ bool test_matrix_equal(Matrix A, Matrix B) {
     return true; // equal
 }
 
-Matrix fill(size_t nrows, size_t ncols, double fill_value) {
+Matrix fill(size_t nrows, size_t ncols, float fill_value) {
     // initialize Matrix
     Matrix a = create_matrix(nrows, ncols);
 
