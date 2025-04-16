@@ -13,7 +13,7 @@ void run_tests(Test_Case test_cases[], unsigned int num_tests)
 {
     for (unsigned int i = 0; i < num_tests; ++i) {
         test_cases[i].test_function();
-        printf("    INFO: Test [%d]: \"%s\" passed.\n", i + 1, test_cases[i].name);
+        printf("    INFO: Test [%03d]: \"%s\" passed.\n", i + 1, test_cases[i].name);
     }
 }
 
