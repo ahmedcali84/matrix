@@ -7,7 +7,6 @@ import os
 # TODO: build lib
 
 BUILD_DIR  = "build/" # Build Directory
-SOURCE_DIR = "src/"   # Contains Source Files
 TEST_DIR   = "test/"  # Contains TEST Source Files
 
 CC       = "gcc" # Compiles 
@@ -18,7 +17,6 @@ LDFLAGS  = "-lm" # linker flags
 # Dictionary Containing Paths to C source files
 source_dict_doubles = [
     {"TEST"   : f"{TEST_DIR}test_doubles.c"},
-    {"SOURCE" : f"{SOURCE_DIR}matrix.c"}
 ]
 
 # function that returns list of paths as one string

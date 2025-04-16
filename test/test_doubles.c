@@ -1,4 +1,6 @@
+#define MATRIX_IMPLEMENTATION
 #include "../src/matrix.h"
+
 #include <assert.h>
 #include <time.h>
 
