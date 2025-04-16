@@ -16,9 +16,9 @@ MATDEF double get_element(Matrix C, size_t row, size_t col) {
     return C.A[row * C.ncols + col];
 }
 
-MATDEF void set_element(Matrix C, size_t row, size_t col, double value) {
+MATDEF void set_element(Matrix C, size_t row, size_t col, double new_value) {
     // set the element at the specified row and column to a new value
-    C.A[row * C.ncols + col] = value;
+    C.A[row * C.ncols + col] = new_value;
 }
 
 Matrix create_matrix(size_t rows, size_t cols) {
